@@ -8,5 +8,3 @@ install:
 
 script:
  - go test ./src/...
- - test -z "$(go fmt ./...)"
- - test -z "$(golint ./src/...)"

@@ -1,10 +1,9 @@
-sudo: false
 language: go
 
 go:
  - 1.6.2
 
-install:
+install: true
 
 script:
  - GOPATH="$(pwd)/vendor" go test ./src/...

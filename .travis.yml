@@ -4,5 +4,7 @@ language: go
 go:
  - 1.6.2
 
+install:
+
 script:
  - GOPATH="$(pwd)/vendor" go test ./src/...

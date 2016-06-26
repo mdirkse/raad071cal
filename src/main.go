@@ -8,10 +8,10 @@ import (
 	"net/http"
 )
 
-const listenAddress = ":8080"
+const listenAddress = ":7070"
 
 var (
-	logger  log.Logger
+	logger log.Logger
 )
 
 func main() {
@@ -22,8 +22,12 @@ func main() {
 	cron.Start()
 
 	// Serve the metrics endpoint
-	http.Handle("/metrics", prometheus.Handler())
+	http.Handle("/raad071metrics", prometheus.Handler())
 	logger.Info(fmt.Sprintf("Fully initialised and listening on [%s].", listenAddress))
 
 	http.ListenAndServe(listenAddress, nil)
+}
+
+func fetchCalender() {
+
 }

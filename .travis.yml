@@ -4,7 +4,7 @@ go:
  - 1.6.2
 
 install:
- - GOPATH="$(pwd)/vendor"
+ - GOPATH="$(pwd)/vendor:$(pwd)"
 
 script:
- - go test ./src/...
+ - go test github.com/mdirkse/raad071cal

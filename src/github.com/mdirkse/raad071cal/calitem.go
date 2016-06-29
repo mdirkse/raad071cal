@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	log "gopkg.in/inconshreveable/log15.v2"
 	"io"
 	"regexp"
 	"strings"
@@ -25,9 +24,6 @@ END:VEVENT`
 )
 
 var (
-	iLogger      log.Logger
-	CEST         *time.Location
-	cutoffDate   time.Time
 	itemsRegex   *regexp.Regexp
 	itemTemplate *template.Template
 )
@@ -44,8 +40,6 @@ type CalItem struct {
 }
 
 func InitCalItemVars() {
-	iLogger = log.New("item")
-	CEST, _ = time.LoadLocation("Europe/Amsterdam")
 	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, CEST)
 	itemsRegex = regexp.MustCompile(`var vdate='(.+)'.split\(`)
 	itemTemplate, _ = template.New("item").Parse(itemTemplateSrc)
@@ -81,10 +75,12 @@ func NewItem(i string, runStart time.Time) (*CalItem, error) {
 	}, nil
 }
 
-func (i CalItem) RenderItem(w io.Writer) {
+func (i CalItem) RenderItem(w io.Writer) error {
 	err := itemTemplate.Execute(w, i)
 
 	if err != nil {
-		iLogger.Error(fmt.Sprintf("Could not render the item [%+v]!", i))
+		return fmt.Errorf("Could not render the item [%+v]! (error: [%+v])", i, err)
 	}
+
+	return nil
 }

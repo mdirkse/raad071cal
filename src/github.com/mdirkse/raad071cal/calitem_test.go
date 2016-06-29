@@ -8,7 +8,7 @@ import (
 )
 
 func TestParseValidItemShouldYieldCorrectStruct(t *testing.T) {
-	InitCalItemVars()
+	initCalFetcherVars()
 
 	tstInput := []string{
 		"2016-06-23!16:00!The rent!#!/some-url/here!is-agenda!My house!80's women",
@@ -26,7 +26,7 @@ func TestParseValidItemShouldYieldCorrectStruct(t *testing.T) {
 }
 
 func TestParseItemWithInvalidDateShouldYieldAnError(t *testing.T) {
-	InitCalItemVars()
+	initCalFetcherVars()
 
 	tstInput := "2016-06-23!16:safdsfd!!!!!!"
 
@@ -38,7 +38,7 @@ func TestParseItemWithInvalidDateShouldYieldAnError(t *testing.T) {
 }
 
 func TestRenderItemShouldYieldCorrectICalEvent(t *testing.T) {
-	InitCalItemVars()
+	initCalFetcherVars()
 
 	var result bytes.Buffer
 	GetTestItem().RenderItem(&result)

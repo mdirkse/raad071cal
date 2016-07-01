@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"regexp"
 	"strings"
 	"text/template"
 	"time"
@@ -24,7 +23,6 @@ END:VEVENT`
 )
 
 var (
-	itemsRegex   *regexp.Regexp
 	itemTemplate *template.Template
 )
 
@@ -41,7 +39,6 @@ type CalItem struct {
 
 func InitCalItemVars() {
 	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, CEST)
-	itemsRegex = regexp.MustCompile(`var vdate='(.+)'.split\(`)
 	itemTemplate, _ = template.New("item").Parse(itemTemplateSrc)
 }
 

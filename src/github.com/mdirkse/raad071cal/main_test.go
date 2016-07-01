@@ -3,6 +3,9 @@ package main
 import (
 	"bytes"
 	"io/ioutil"
+	"log"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 )
 
@@ -74,5 +77,27 @@ func TestRenderCalendarShouldYieldCorrectOutput(t *testing.T) {
 			t.Fatalf("Render went awry! Expected:\n%s \n\nbut got:\n%s", expected, result.String())
 		}
 	}
+}
 
+func TestHttpEndpointRequestShouldYieldCorrectOutput(t *testing.T) {
+	initCalFetcherVars()
+
+	req, err := http.NewRequest("GET", "http://bla.com", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	w := httptest.NewRecorder()
+	calHandler(w, req)
+
+	if w.Code != 200 {
+		t.Fatalf("Request should return status 200 but was %d!", w.Code)
+	}
+
+	b, _ := ioutil.ReadFile("../../../../testfiles/empty.ical")
+	expected := string(b)
+
+	if expected != w.Body.String() {
+		t.Fatalf("Request went awry! Expected:\n%s \n\nbut got:\n%s", expected, w.Body.String())
+	}
 }

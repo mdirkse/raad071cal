@@ -7,6 +7,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -22,6 +23,7 @@ var (
 	CEST       *time.Location
 	cronT      *cron.Cron
 	cutoffDate time.Time
+	itemsRegex *regexp.Regexp
 )
 
 func main() {
@@ -31,12 +33,12 @@ func main() {
 	// Configure periodic polling
 	cronT.Start()
 
+	http.HandleFunc("/raad071-alles.ical", calHandler)
+
+	logger.Info(fmt.Sprintf("Fully initialised and listening on [%s].", listenAddress))
 	go loadCalendarItems() // do initial load
 
-	//http.Handle("/raad071metrics", prometheus.Handler())
-
-	//logger.Info(fmt.Sprintf("Fully initialised and listening on [%s].", listenAddress))
-	//http.ListenAndServe(listenAddress, nil)
+	http.ListenAndServe(listenAddress, nil)
 }
 
 func initCalFetcherVars() {
@@ -44,6 +46,10 @@ func initCalFetcherVars() {
 	CEST, _ = time.LoadLocation("Europe/Amsterdam")
 	cronT = cron.New()
 	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, CEST)
+	itemsRegex = regexp.MustCompile(`var vdate='(.+)'.split\(`)
+
+	emptyCal := []*CalItem{}
+	calItems = &emptyCal
 
 	InitCalItemVars()
 }
@@ -110,8 +116,21 @@ func parseCalendar(pageBytes *[]byte) (*[]*CalItem, error) {
 	return &items, nil
 }
 
-func renderCalendar(items *[]*CalItem, w io.Writer) {
-	w.Write([]byte("BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//mdirkse/raad071cal//NONSGML v1.0//EN\n"))
+func calHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/calendar")
+	w.Header().Set("Cache-Control", "max-age=3600")
+
+	if err := renderCalendar(calItems, w); err != nil {
+		http.Error(w, "Couldn't render calendar items!", http.StatusInternalServerError)
+	}
+}
+
+func renderCalendar(items *[]*CalItem, w io.Writer) error {
+	_, err := w.Write([]byte("BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//mdirkse/raad071cal//NONSGML v1.0//EN\n"))
+
+	if err != nil {
+		return fmt.Errorf("Could not write calendar!")
+	}
 
 	for _, c := range *items {
 		c.RenderItem(w)
@@ -119,4 +138,6 @@ func renderCalendar(items *[]*CalItem, w io.Writer) {
 	}
 
 	w.Write([]byte("END:VCALENDAR"))
+
+	return nil
 }

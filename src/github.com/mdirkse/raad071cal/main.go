@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	listenAddress      = ":7070"
+	listenAddress      = ":80"
 	raad071CalendarUrl = "http://leiden.notudoc.nl/cgi-bin/calendar.cgi"
 )
 
@@ -31,9 +31,12 @@ func main() {
 	logger.Info("Starting raad071cal")
 
 	// Configure periodic polling
+	logger.Info(fmt.Sprintf("Polling source calendar [%s] every hour.", raad071CalendarUrl))
+	cronT.AddFunc("1 1 * * * *", loadCalendarItems)
 	cronT.Start()
 
-	http.HandleFunc("/raad071-alles.ical", calHandler)
+	http.Handle("/kalender/alles.ics", loggingHandler(calHandler()))
+	http.Handle("/", loggingHandler(http.FileServer(http.Dir("html"))))
 
 	logger.Info(fmt.Sprintf("Fully initialised and listening on [%s].", listenAddress))
 	go loadCalendarItems() // do initial load
@@ -116,13 +119,22 @@ func parseCalendar(pageBytes *[]byte) (*[]*CalItem, error) {
 	return &items, nil
 }
 
-func calHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/calendar")
-	w.Header().Set("Cache-Control", "max-age=3600")
+func loggingHandler(h http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Debug(fmt.Sprintf("bla: [%s] [%s] %s", r.RemoteAddr, r.Method, r.URL.Path))
+		h.ServeHTTP(w, r)
+	})
+}
 
-	if err := renderCalendar(calItems, w); err != nil {
-		http.Error(w, "Couldn't render calendar items!", http.StatusInternalServerError)
-	}
+func calHandler() http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/calendar")
+		w.Header().Set("Cache-Control", "max-age=3600")
+
+		if err := renderCalendar(calItems, w); err != nil {
+			http.Error(w, "Couldn't render calendar items!", http.StatusInternalServerError)
+		}
+	})
 }
 
 func renderCalendar(items *[]*CalItem, w io.Writer) error {

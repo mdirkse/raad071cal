@@ -60,11 +60,9 @@ func TestRenderCalendarShouldYieldCorrectOutput(t *testing.T) {
 		location string
 		items    []*CalItem
 	}{
-		{"../../../../testfiles/test.ical", []*CalItem{GetTestItem(), GetTestItem()}},
+		{"../../../../testfiles/test.ical", []*CalItem{GetTestItem1(), GetTestItem2()}},
 		{"../../../../testfiles/empty.ical", []*CalItem{}},
 	}
-
-	iCals[0].items[1].Name = "Muhahahaha"
 
 	for _, ct := range iCals {
 		var result bytes.Buffer
@@ -88,7 +86,7 @@ func TestHttpEndpointRequestShouldYieldCorrectOutput(t *testing.T) {
 	}
 
 	w := httptest.NewRecorder()
-	calHandler(w, req)
+	calHandler().ServeHTTP(w, req)
 
 	if w.Code != 200 {
 		t.Fatalf("Request should return status 200 but was %d!", w.Code)

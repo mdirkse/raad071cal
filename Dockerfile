@@ -1,4 +1,9 @@
 FROM   scratch
-EXPOSE 7070
-ADD    raad071cal  raad071cal
+
+ADD  zoneinfo.tar.gz /
+COPY html /html
+COPY raad071cal  /raad071cal
+
+EXPOSE 80
+WORKDIR /
 CMD ["/raad071cal"]

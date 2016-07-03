@@ -123,7 +123,7 @@ func GetEndTime(allDay bool, t time.Time) time.Time {
 		return t
 	}
 
-	return t.Add(2 * time.Hour)
+	return t.Add(3 * time.Hour)
 }
 
 func RenderUrl(o string) string {

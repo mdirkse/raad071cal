@@ -104,7 +104,7 @@ func GetTestItem2() *CalItem {
 		Uid:             "c3bf3a489d812fd932c843a5b791d958",
 		CreatedDateTime: GetTestTime().In(time.UTC),
 		Url:             agendaUrlPrefix + "/some-url/here",
-		EndDateTime:     GetTestTime().In(time.UTC).Add(2 * time.Hour),
+		EndDateTime:     GetTestTime().In(time.UTC).Add(3 * time.Hour),
 		Location:        "Raadzaal, Stadhuis, Leiden",
 		Name:            "Gemeenteraad",
 		Organizer:       "Gemeenteraad",
@@ -117,7 +117,7 @@ func GetRenderedTestItem2() string {
 UID:c3bf3a489d812fd932c843a5b791d958@raad071.mdirkse.nl
 DTSTAMP:20160623T140000Z
 DTSTART:20160623T140000Z
-DTEND:20160623T160000Z
+DTEND:20160623T170000Z
 SUMMARY:Gemeenteraad
 DESCRIPTION:Organisator: Gemeenteraad\nStukken: https://leiden.notudoc.nl/some-url/here
 LOCATION:Raadzaal, Stadhuis, Leiden

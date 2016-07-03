@@ -6,7 +6,7 @@ For reasons I can't quite fathom, the [gemeenteraad.leiden.nl calendar](http://l
 This simple web service reads that variable, parses the info and serves up an iCal version of the information (so you can add it to Google Calendar for instance).
 
 ### Website
-This code runs at http://raad071cal.mdirkse.nl/
+This code runs at http://raad071.mdirkse.nl/
 
 ### Docker image
 The docker image with this service can be found here: https://hub.docker.com/r/mdirkse/raad071cal/

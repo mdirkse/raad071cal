@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/mdirkse/raad071cal.svg?branch=master)](https://travis-ci.org/mdirkse/raad071cal)
+[![Coverage](https://codecov.io/gh/mdirkse/raad071cal/branch/master/graph/badge.svg)](https://codecov.io/gh/mdirkse/raad071cal)
 
 # Raad 071 Cal
 For reasons I can't quite fathom, the [gemeenteraad.leiden.nl calendar](http://leiden.notudoc.nl/cgi-bin/calendar.cgi) has the entire municipal council meeting calender encoded into a Javascript variable on the homepage.

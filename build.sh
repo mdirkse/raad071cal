@@ -8,8 +8,10 @@ SCRIPTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 mkdir -p "${SCRIPTDIR}/build"
 cp "${SCRIPTDIR}/Dockerfile" "${SCRIPTDIR}/build"
 cp -R "${SCRIPTDIR}/html" "${SCRIPTDIR}/build"
-tar cfz "${SCRIPTDIR}/build/zoneinfo.tar.gz" /usr/share/zoneinfo/Europe/Amsterdam
 
+if [ ! -f "${SCRIPTDIR}/build/zoneinfo.tar.gz" ]; then
+  tar cfz "${SCRIPTDIR}/build/zoneinfo.tar.gz" /usr/share/zoneinfo/Europe/Amsterdam
+fi
 # Build!
 cd "${SCRIPTDIR}/build" || exit
 docker build --rm -t "mdirkse/raad071cal" .

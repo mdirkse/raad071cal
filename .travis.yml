@@ -3,8 +3,16 @@ language: go
 go:
  - 1.6.2
 
+before_install:
+  - go get github.com/onsi/gomega
+  - go get github.com/onsi/ginkgo
+  - go get golang.org/x/tools/cmd/cover
+
 install:
  - GOPATH="$(pwd)/vendor:$(pwd)"
 
 script:
- - go test github.com/mdirkse/raad071cal
+ - go test -coverprofile=coverage.txt -covermode=atomic github.com/mdirkse/raad071cal
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

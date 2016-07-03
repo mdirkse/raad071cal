@@ -87,6 +87,8 @@ func loadCalendarItems() {
 }
 
 func fetchCalenderPage(calendarUrl string) (*[]byte, error) {
+	start := time.Now()
+
 	resp, err := http.Get(calendarUrl)
 	if err != nil {
 		return nil, fmt.Errorf("Could not fetch the calendar from [%s]: %+v", calendarUrl, err)
@@ -97,11 +99,13 @@ func fetchCalenderPage(calendarUrl string) (*[]byte, error) {
 		return nil, fmt.Errorf("Could not read the calender URL contents: %+v", err)
 	}
 
+	logger.Debug(fmt.Sprintf("Fetched calendar in %0.2f seconds.", time.Now().Sub(start).Seconds()))
 	return &bytes, nil
 }
 
 func parseCalendar(pageBytes *[]byte) (*[]*CalItem, error) {
 	logger.Info("Parsing the calendar.")
+	start := time.Now()
 
 	runStart := time.Now()
 	calBytes := itemsRegex.FindSubmatch(*pageBytes)
@@ -127,14 +131,14 @@ func parseCalendar(pageBytes *[]byte) (*[]*CalItem, error) {
 		}
 	}
 
-	logger.Info(fmt.Sprintf("Parsed %d calendar items.", len(items)))
+	logger.Info(fmt.Sprintf("Parsed %d calendar items in %0.3f seconds.", len(items), time.Now().Sub(start).Seconds()))
 
 	return &items, nil
 }
 
 func loggingHandler(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Debug(fmt.Sprintf("bla: [%s] [%s] %s", r.RemoteAddr, r.Method, r.URL.Path))
+		log.Debug(fmt.Sprintf("[%s] [%s] %s", r.RemoteAddr, r.Method, r.URL.Path))
 		h.ServeHTTP(w, r)
 	})
 }
@@ -151,6 +155,8 @@ func calHandler() http.Handler {
 }
 
 func renderCalendar(items *[]*CalItem, w io.Writer) error {
+	start := time.Now()
+
 	_, err := w.Write([]byte("BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//mdirkse/raad071cal//NONSGML v1.0//EN\n"))
 
 	if err != nil {
@@ -163,6 +169,8 @@ func renderCalendar(items *[]*CalItem, w io.Writer) error {
 	}
 
 	w.Write([]byte("END:VCALENDAR"))
+
+	logger.Debug(fmt.Sprintf("Rendered iCal calendar in %0.3f seconds.", time.Now().Sub(start).Seconds()))
 
 	return nil
 }

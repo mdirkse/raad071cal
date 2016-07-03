@@ -27,7 +27,7 @@ import (
 
 const (
 	listenAddress      = ":80"
-	raad071CalendarUrl = "http://leiden.notudoc.nl/cgi-bin/calendar.cgi"
+	raad071CalendarURL = "http://leiden.notudoc.nl/cgi-bin/calendar.cgi"
 	calendarHeader     = `BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//mdirkse/raad071cal//NONSGML v1.0//EN
@@ -43,7 +43,7 @@ X-PUBLISHED-TTL:PT6H
 var (
 	logger     log.Logger
 	calItems   *[]*CalItem
-	CEST       *time.Location
+	cestTz     *time.Location
 	cronT      *cron.Cron
 	cutoffDate time.Time
 	itemsRegex *regexp.Regexp
@@ -54,7 +54,7 @@ func main() {
 	logger.Info("Starting raad071cal")
 
 	// Configure periodic polling
-	logger.Info(fmt.Sprintf("Polling source calendar [%s] every 6 hours.", raad071CalendarUrl))
+	logger.Info(fmt.Sprintf("Polling source calendar [%s] every 6 hours.", raad071CalendarURL))
 	cronT.AddFunc("1 1 */6 * * *", loadCalendarItems)
 	cronT.Start()
 
@@ -69,19 +69,19 @@ func main() {
 
 func initCalFetcherVars() {
 	logger = log.New()
-	CEST, _ = time.LoadLocation("Europe/Amsterdam")
+	cestTz, _ = time.LoadLocation("Europe/Amsterdam")
 	cronT = cron.New()
-	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, CEST)
+	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, cestTz)
 	itemsRegex = regexp.MustCompile(`var vdate='(.+)'.split\(`)
 
 	emptyCal := []*CalItem{}
 	calItems = &emptyCal
 
-	InitCalItemVars()
+	initCalItemVars()
 }
 
 func loadCalendarItems() {
-	pageBytes, err := fetchCalenderPage(raad071CalendarUrl)
+	pageBytes, err := fetchCalenderPage(raad071CalendarURL)
 	if err != nil {
 		logger.Error(fmt.Sprintf("Unable to fetch the calendar page: %+v", err))
 		return
@@ -96,12 +96,12 @@ func loadCalendarItems() {
 	calItems = newCalItems // IS THIS THREAD-SAFE?
 }
 
-func fetchCalenderPage(calendarUrl string) (*[]byte, error) {
+func fetchCalenderPage(calendarURL string) (*[]byte, error) {
 	start := time.Now()
 
-	resp, err := http.Get(calendarUrl)
+	resp, err := http.Get(calendarURL)
 	if err != nil {
-		return nil, fmt.Errorf("Could not fetch the calendar from [%s]: %+v", calendarUrl, err)
+		return nil, fmt.Errorf("Could not fetch the calendar from [%s]: %+v", calendarURL, err)
 	}
 
 	bytes, err := ioutil.ReadAll(resp.Body)
@@ -109,7 +109,7 @@ func fetchCalenderPage(calendarUrl string) (*[]byte, error) {
 		return nil, fmt.Errorf("Could not read the calender URL contents: %+v", err)
 	}
 
-	logger.Debug(fmt.Sprintf("Fetched calendar in %0.2f seconds.", time.Now().Sub(start).Seconds()))
+	logger.Debug(fmt.Sprintf("Fetched calendar in %0.2f seconds.", time.Since(start).Seconds()))
 	return &bytes, nil
 }
 
@@ -141,7 +141,7 @@ func parseCalendar(pageBytes *[]byte) (*[]*CalItem, error) {
 		}
 	}
 
-	logger.Info(fmt.Sprintf("Parsed %d calendar items in %0.3f seconds.", len(items), time.Now().Sub(start).Seconds()))
+	logger.Info(fmt.Sprintf("Parsed %d calendar items in %0.3f seconds.", len(items), time.Since(start).Seconds()))
 
 	return &items, nil
 }
@@ -180,7 +180,7 @@ func renderCalendar(items *[]*CalItem, w io.Writer) error {
 
 	w.Write([]byte("END:VCALENDAR"))
 
-	logger.Debug(fmt.Sprintf("Rendered iCal calendar in %0.3f seconds.", time.Now().Sub(start).Seconds()))
+	logger.Debug(fmt.Sprintf("Rendered iCal calendar in %0.3f seconds.", time.Since(start).Seconds()))
 
 	return nil
 }

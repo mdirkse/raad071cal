@@ -26,9 +26,9 @@ import (
 const (
 	dateTimeLayout  = "2006-01-02T15:04"
 	dateLayout      = "2006-01-02"
-	agendaUrlPrefix = "https://leiden.notudoc.nl"
+	agendaURLPrefix = "https://leiden.notudoc.nl"
 	itemTemplateSrc = `BEGIN:VEVENT
-UID:{{.Uid}}@raad071.mdirkse.nl
+UID:{{.UID}}@raad071.mdirkse.nl
 DTSTAMP:{{.CreatedDateTime.Format "20060102T150405"}}Z
 {{- if .AllDay}}
 DTSTART;VALUE=DATE:{{.StartDateTime.Format "20060102"}}
@@ -38,7 +38,7 @@ DTSTART:{{.StartDateTime.Format "20060102T150405"}}Z
 DTEND:{{.EndDateTime.Format "20060102T150405"}}Z
 {{- end}}
 SUMMARY:{{.Name}}
-DESCRIPTION:Organisator: {{.Organizer}}\nStukken: {{.Url}}
+DESCRIPTION:Organisator: {{.Organizer}}\nStukken: {{.URL}}
 LOCATION:{{.Location}}
 END:VEVENT`
 )
@@ -47,11 +47,12 @@ var (
 	itemTemplate *template.Template
 )
 
+// CalItem represents a calendar item that can be rendered to iCal.
 type CalItem struct {
-	Uid             string
+	UID             string
 	AllDay          bool
 	CreatedDateTime time.Time
-	Url             string
+	URL             string
 	EndDateTime     time.Time
 	Location        string
 	Name            string
@@ -59,11 +60,12 @@ type CalItem struct {
 	StartDateTime   time.Time
 }
 
-func InitCalItemVars() {
-	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, CEST)
+func initCalItemVars() {
+	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, cestTz)
 	itemTemplate, _ = template.New("item").Parse(itemTemplateSrc)
 }
 
+// NewItem creates a new calendar item from a string input
 func NewItem(i string, runStart time.Time) (*CalItem, error) {
 	fields := strings.Split(i, "!")
 
@@ -79,7 +81,7 @@ func NewItem(i string, runStart time.Time) (*CalItem, error) {
 	} else {
 		// Strip out "uur" if we have to
 		timeField := strings.Replace(fields[1], " uur", "", 1)
-		st, err = time.ParseInLocation(dateTimeLayout, fmt.Sprintf("%sT%s", fields[0], timeField), CEST)
+		st, err = time.ParseInLocation(dateTimeLayout, fmt.Sprintf("%sT%s", fields[0], timeField), cestTz)
 	}
 
 	if err != nil {
@@ -90,18 +92,19 @@ func NewItem(i string, runStart time.Time) (*CalItem, error) {
 	stUTC := st.In(time.UTC)
 
 	return &CalItem{
-		Uid:             GenerateId(stUTC, fields[2]),
+		UID:             generateID(stUTC, fields[2]),
 		AllDay:          allDay,
 		CreatedDateTime: runStart.In(time.UTC),
-		Url:             RenderUrl(fields[4]),
-		EndDateTime:     GetEndTime(allDay, stUTC),
-		Location:        RenderLocation(fields[6]),
+		URL:             renderURL(fields[4]),
+		EndDateTime:     getEndTime(allDay, stUTC),
+		Location:        renderLocation(fields[6]),
 		Name:            strings.Title(fields[2]),
 		Organizer:       strings.Title(fields[7]),
 		StartDateTime:   stUTC,
 	}, nil
 }
 
+// RenderItem renders a calendar item in iCalendar format
 func (i CalItem) RenderItem(w io.Writer) error {
 	err := itemTemplate.Execute(w, i)
 
@@ -112,13 +115,13 @@ func (i CalItem) RenderItem(w io.Writer) error {
 	return nil
 }
 
-func GenerateId(startTime time.Time, name string) string {
+func generateID(startTime time.Time, name string) string {
 	timeStamp := startTime.Format("20060102T150405")
 	data := []byte(timeStamp + name)
 	return fmt.Sprintf("%x", md5.Sum(data))
 }
 
-func GetEndTime(allDay bool, t time.Time) time.Time {
+func getEndTime(allDay bool, t time.Time) time.Time {
 	if allDay {
 		return t
 	}
@@ -126,13 +129,13 @@ func GetEndTime(allDay bool, t time.Time) time.Time {
 	return t.Add(3 * time.Hour)
 }
 
-func RenderUrl(o string) string {
+func renderURL(o string) string {
 	// Construct the description
 	var description bytes.Buffer
 	if o != "" {
 		// If it's a relative URL then add the agenda part
 		if strings.HasPrefix(o, "/") {
-			description.WriteString(agendaUrlPrefix)
+			description.WriteString(agendaURLPrefix)
 		}
 
 		description.WriteString(o)
@@ -141,7 +144,7 @@ func RenderUrl(o string) string {
 	return description.String()
 }
 
-func RenderLocation(o string) string {
+func renderLocation(o string) string {
 	lo := strings.ToLower(o)
 
 	if lo == "raadzaal" || lo == "commissiekamer" {

@@ -75,10 +75,10 @@ func TestRenderItemShouldYieldCorrectICalEvent(t *testing.T) {
 
 func GetTestItem1() *CalItem {
 	return &CalItem{
-		Uid:             "14c88381339fffd3963618fe8cf93825",
+		UID:             "14c88381339fffd3963618fe8cf93825",
 		AllDay:          true,
 		CreatedDateTime: GetTestTime().In(time.UTC),
-		Url:             "http://what.have.you/done/for/me/lately.pdf",
+		URL:             "http://what.have.you/done/for/me/lately.pdf",
 		EndDateTime:     GetTestTime().Add(-14 * time.Hour).In(time.UTC), // Correct to 0 hours for allDay
 		Location:        "My house",
 		Name:            "The Rent",
@@ -101,9 +101,9 @@ END:VEVENT`
 
 func GetTestItem2() *CalItem {
 	return &CalItem{
-		Uid:             "c3bf3a489d812fd932c843a5b791d958",
+		UID:             "c3bf3a489d812fd932c843a5b791d958",
 		CreatedDateTime: GetTestTime().In(time.UTC),
-		Url:             agendaUrlPrefix + "/some-url/here",
+		URL:             agendaURLPrefix + "/some-url/here",
 		EndDateTime:     GetTestTime().In(time.UTC).Add(3 * time.Hour),
 		Location:        "Raadzaal, Stadhuis, Leiden",
 		Name:            "Gemeenteraad",
@@ -125,5 +125,5 @@ END:VEVENT`
 }
 
 func GetTestTime() time.Time {
-	return time.Date(2016, time.June, 23, 16, 0, 0, 0, CEST)
+	return time.Date(2016, time.June, 23, 16, 0, 0, 0, cestTz)
 }

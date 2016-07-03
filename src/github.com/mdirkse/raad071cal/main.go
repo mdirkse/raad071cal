@@ -28,6 +28,16 @@ import (
 const (
 	listenAddress      = ":80"
 	raad071CalendarUrl = "http://leiden.notudoc.nl/cgi-bin/calendar.cgi"
+	calendarHeader     = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//mdirkse/raad071cal//NONSGML v1.0//EN
+URL:http://raad071.mdirkse.nl/kalender/alles.ics
+NAME:#raad071 kalender
+X-WR-CALNAME:#raad071 kalender
+DESCRIPTION:De politieke agenda van de Leidse gemeenteraad
+X-WR-CALDESC:De politieke agenda van de Leidse gemeenteraad
+X-PUBLISHED-TTL:PT6H
+`
 )
 
 var (
@@ -44,8 +54,8 @@ func main() {
 	logger.Info("Starting raad071cal")
 
 	// Configure periodic polling
-	logger.Info(fmt.Sprintf("Polling source calendar [%s] every hour.", raad071CalendarUrl))
-	cronT.AddFunc("1 1 * * * *", loadCalendarItems)
+	logger.Info(fmt.Sprintf("Polling source calendar [%s] every 6 hours.", raad071CalendarUrl))
+	cronT.AddFunc("1 1 */6 * * *", loadCalendarItems)
 	cronT.Start()
 
 	http.Handle("/kalender/alles.ics", loggingHandler(calHandler()))
@@ -157,7 +167,7 @@ func calHandler() http.Handler {
 func renderCalendar(items *[]*CalItem, w io.Writer) error {
 	start := time.Now()
 
-	_, err := w.Write([]byte("BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//mdirkse/raad071cal//NONSGML v1.0//EN\n"))
+	_, err := w.Write([]byte(calendarHeader))
 
 	if err != nil {
 		return fmt.Errorf("Could not write calendar!")

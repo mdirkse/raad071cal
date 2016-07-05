@@ -17,10 +17,10 @@ DESCRIPTION:Organisator: 80'S Women\nStukken: http://what.have.you/done/for/me/l
 LOCATION:My house
 END:VEVENT
 BEGIN:VEVENT
-UID:c3bf3a489d812fd932c843a5b791d958@raad071.mdirkse.nl
+UID:37384d42f0c7fe4ad6103b2b7344bbe7@raad071.mdirkse.nl
 DTSTAMP:20160623T140000Z
-DTSTART:20160623T140000Z
-DTEND:20160623T170000Z
+DTSTART:20160623T180000Z
+DTEND:20160623T210000Z
 SUMMARY:Gemeenteraad
 DESCRIPTION:Organisator: Gemeenteraad\nStukken: https://leiden.notudoc.nl/some-url/here
 LOCATION:Raadzaal, Stadhuis, Leiden

@@ -96,7 +96,7 @@ func NewItem(i string, runStart time.Time) (*CalItem, error) {
 		AllDay:          allDay,
 		CreatedDateTime: runStart.In(time.UTC),
 		URL:             renderURL(fields[4]),
-		EndDateTime:     getEndTime(allDay, stUTC),
+		EndDateTime:     getEndTime(allDay, stUTC, fields[2]),
 		Location:        renderLocation(fields[6]),
 		Name:            strings.Title(fields[2]),
 		Organizer:       strings.Title(fields[7]),
@@ -121,12 +121,20 @@ func generateID(startTime time.Time, name string) string {
 	return fmt.Sprintf("%x", md5.Sum(data))
 }
 
-func getEndTime(allDay bool, t time.Time) time.Time {
+func getEndTime(allDay bool, startTime time.Time, name string) time.Time {
 	if allDay {
-		return t
+		return startTime
 	}
 
-	return t.Add(3 * time.Hour)
+	// Switch on the first word of the name
+	switch strings.ToLower(strings.Split(name, " ")[0]) {
+	case "gemeenteraad":
+		return time.Date(startTime.Year(), startTime.Month(), startTime.Day(), 21, 0, 0, 0, time.UTC)
+	case "raadscommissie", "college":
+		return startTime.Add(3 * time.Hour)
+	default:
+		return startTime.Add(2 * time.Hour)
+	}
 }
 
 func renderURL(o string) string {

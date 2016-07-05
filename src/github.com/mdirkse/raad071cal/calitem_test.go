@@ -28,7 +28,7 @@ func TestParseValidItemShouldYieldCorrectStruct(t *testing.T) {
 		input    string
 	}{
 		{GetTestItem1(), "2016-06-23!!The rent!#!http://what.have.you/done/for/me/lately.pdf!is-agenda!My house!80's women"},
-		{GetTestItem2(), "2016-06-23!16:00 uur!gemeenteraad!#!/some-url/here!is-agenda!raadzaal!gemeenteraad"},
+		{GetTestItem2(), "2016-06-23!20:00 uur!gemeenteraad!#!/some-url/here!is-agenda!raadzaal!gemeenteraad"},
 	}
 
 	for _, i := range testSet {
@@ -49,6 +49,30 @@ func TestParseItemWithInvalidDateShouldYieldAnError(t *testing.T) {
 
 	if err == nil {
 		t.Fatalf("Test item incorrectly parsed when it shouldn't have been!")
+	}
+}
+
+func TestVariousSpecialCasesForMeetingDuration(t *testing.T) {
+	initCalFetcherVars()
+
+	// Gemeenteraad should always last 'till 21h UTC
+	gr21, _ := NewItem("2016-06-23!16:00 uur!gemeenteraad!#!/some-url/here!is-agenda!raadzaal!gemeenteraad", GetTestTime())
+	if gr21.EndDateTime.Hour() != 21 {
+		t.Fatalf("Gemeenteraad item has wrong end time. Expected 21 but was %d!", gr21.EndDateTime.Hour())
+	}
+
+	// College should always last 3h
+	col3h, _ := NewItem("2016-06-23!16:00 uur!College Burgemeester en Wethouders!#!/some-url/here!is-agenda!raadzaal!gemeenteraad", GetTestTime())
+	col3hDuration := col3h.EndDateTime.Sub(col3h.StartDateTime).Hours()
+	if col3hDuration != 3 {
+		t.Fatalf("College lasted wrong amount of hours. Expected 3 but was %f!", col3hDuration)
+	}
+
+	// Commissie should always last 3h
+	comm3h, _ := NewItem("2016-06-23!16:00 uur!College Burgemeester en Wethouders!#!/some-url/here!is-agenda!raadzaal!gemeenteraad", GetTestTime())
+	comm3hDuration := comm3h.EndDateTime.Sub(comm3h.StartDateTime).Hours()
+	if col3hDuration != 3 {
+		t.Fatalf("Commission lasted wrong amount of hours. Expected 3 but was %f!", comm3hDuration)
 	}
 }
 
@@ -101,23 +125,23 @@ END:VEVENT`
 
 func GetTestItem2() *CalItem {
 	return &CalItem{
-		UID:             "c3bf3a489d812fd932c843a5b791d958",
+		UID:             "37384d42f0c7fe4ad6103b2b7344bbe7",
 		CreatedDateTime: GetTestTime().In(time.UTC),
 		URL:             agendaURLPrefix + "/some-url/here",
-		EndDateTime:     GetTestTime().In(time.UTC).Add(3 * time.Hour),
+		EndDateTime:     GetTestTime().In(time.UTC).Add(7 * time.Hour),
 		Location:        "Raadzaal, Stadhuis, Leiden",
 		Name:            "Gemeenteraad",
 		Organizer:       "Gemeenteraad",
-		StartDateTime:   GetTestTime().In(time.UTC),
+		StartDateTime:   GetTestTime().In(time.UTC).Add(4 * time.Hour),
 	}
 }
 
 func GetRenderedTestItem2() string {
 	return `BEGIN:VEVENT
-UID:c3bf3a489d812fd932c843a5b791d958@raad071.mdirkse.nl
+UID:37384d42f0c7fe4ad6103b2b7344bbe7@raad071.mdirkse.nl
 DTSTAMP:20160623T140000Z
-DTSTART:20160623T140000Z
-DTEND:20160623T170000Z
+DTSTART:20160623T180000Z
+DTEND:20160623T210000Z
 SUMMARY:Gemeenteraad
 DESCRIPTION:Organisator: Gemeenteraad\nStukken: https://leiden.notudoc.nl/some-url/here
 LOCATION:Raadzaal, Stadhuis, Leiden

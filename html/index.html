@@ -46,6 +46,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#project">Over het project</a></li>
                     <li><a href="#instructions">Handleiding</a></li>
+                    <li><a href="#faq">FAQ</a></li>
                     <li><a href="#author">Auteur</a></li>
                     <li><a href="#tech">Tech</a></li>
                 </ul>
@@ -66,9 +67,15 @@
                         <h1>#raad071 kalender</h1>
                         <h3>Zet de Leidse politieke kalender in je digitale agenda.</h3>
                         <hr class="intro-divider">
-                        <div class="input-group col-lg-4 col-lg-offset-4">
+                        <div class="input-group col-lg-6 col-lg-offset-3">
                             <span class="input-group-addon" id="webcal-all"><i class="fa fa-calendar fa-fw"></i></span>
                             <input type="text" title="Copy-paste dit adres in je digitale agenda." class="form-control" value="webcal://raad071.mdirkse.nl/kalender/alles.ics" readonly onclick="$(this).select()">
+                            <span class="input-group-btn">
+                                <a href="webcal://raad071.mdirkse.nl/kalender/alles.ics" class="btn btn-default btn-md" role="button" target="_blank" title="Voeg de kalender van de Leidse gemeenteraad toe aan je digitale agenda">
+                                    <i class="fa fa-calendar-plus-o fa-fw"></i>
+                                    voeg toe aan mijn agenda
+                                </a>
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -87,10 +94,10 @@
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
                     <h2 class="section-heading">Over het project</h2>
-                    <p class="lead">De Leidse gemeenteraad gebruikt <a href="http://notubiz.nl/notudoc">Notudoc</a> om het raadsproces digitaal te ondersteunen. Alhoewel de raadskalender <a href="https://leiden.notudoc.nl/cgi-bin/homepage.cgi">via de website te raadplegen is</a>, ontbreekt een makkelijke manier om alle kalenderitems te importeren in persoonlijke agenda's zoals Google Calendar of Outlook. Het <strong>#raad071 kalender</strong> project lost dit probleem op en maakt de raadskalender van Leiden beschikbaar in een altijd-up-to-date formaat dat jouw digitale agenda begrijpt.<br/><br/><em>Voeg de <strong>#raad071 kalender</strong> toe aan je agenda en voer nooit meer handmatig commissie-en raadsvergaderingen in!</em></p>
+                    <p class="lead">De Leidse gemeenteraad gebruikt <a href="http://notubiz.nl/notudoc">Notudoc</a> om het raadsproces digitaal te ondersteunen. Alhoewel de raadskalender <a href="https://leiden.notudoc.nl/cgi-bin/homepage.cgi">via de website te raadplegen is</a>, ontbreekt een makkelijke manier om alle kalenderitems te importeren in persoonlijke agenda's zoals Google Calendar of Outlook. Het <mark>#raad071 kalender</mark> project lost dit probleem op en maakt de raadskalender van Leiden beschikbaar in een altijd-up-to-date formaat dat jouw digitale agenda begrijpt.<br/><br/><em>Voeg de <strong>#raad071 kalender</strong> toe aan je agenda en voer nooit meer handmatig commissie-en raadsvergaderingen in!</em></p>
                 </div>
                 <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive" src="img/ipad.png" alt="">
+                    <img class="img-responsive img-rounded" src="img/mh.jpg" alt="">
                 </div>
             </div>
         </div>
@@ -106,14 +113,10 @@
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
                     <h2 class="section-heading">Handleiding</h2>
-                    <p class="lead">De <strong>#raad071 kalender</strong> wordt beschikbaar gesteld als <a href="https://en.wikipedia.org/wiki/ICalendar">iCal</a> bestand. Dit formaat kan door de meeste kalender applicaties verwerkt worden. Hoe je de kalender aan jouw digitale agenda toevoegt ligt aan welke applicatie je gebruikt. Je zal in ieder geval het online adres van de kalender nodig hebben. Deze vind je <a href="#">bovenaan deze pagina</a>. Eenmaal toegevoegd wordt de kalender automatisch bijgewerkt. Hieronder staat een lijstje met instructies voor hoe je iCal bestanden integreert met de meeste-gebruikte digitale agenda's:<br/>
-                    <a href="https://support.apple.com/en-us/HT202361">Apple Calendar</a> |
-                    <a href="https://support.google.com/calendar/answer/37118?hl=en">Google Calendar</a> |
-                    <a href="https://support.office.com/en-us/article/View-and-subscribe-to-Internet-Calendars-f6248506-e144-4508-b658-c838b6067597#bm2">Microsoft Outlook</a>
-                    </p>
+                    <p class="lead">De <mark>#raad071 kalender</mark> wordt beschikbaar gesteld als <a href="https://en.wikipedia.org/wiki/ICalendar">iCal</a> bestand. Dit formaat kan door de meeste kalender applicaties verwerkt worden. Hoe je de kalender aan jouw digitale agenda toevoegt ligt aan welke applicatie je gebruikt. In de meeste gevallen volstaat het clicken op de "voeg toe aan mijn agenda" knop <a href="#">bovenaan deze pagina</a>. Eenmaal toegevoegd wordt de kalender automatisch bijgewerkt.</p>
                 </div>
                 <div class="col-lg-5 col-sm-pull-6  col-sm-6">
-                    <img class="img-responsive img-rounded" src="img/agenda.png" alt="">
+                    <img class="img-responsive img-rounded" src="img/agenda.jpg" alt="">
                 </div>
             </div>
         </div>
@@ -121,7 +124,7 @@
     </div>
     <!-- /.content-section-b -->
 
-    <a  name="author"></a>
+    <a  name="faq"></a>
     <div class="content-section-a">
         <div class="container">
             <div class="row">
@@ -129,16 +132,44 @@
                     <hr class="section-heading-spacer">
                     <div class="clearfix"></div>
                     <h2 class="section-heading">Auteur</h2>
-                    <p class="lead">De <strong>#raad071 kalender</strong> wordt ontwikkeld en onderhouden door <a href="https://twitter.com/mdirkse">Maarten Dirkse</a>. Maarten is duo-raadslid voor de <a href="http://www.vvdleiden.nl">VVD Leiden</a>. Hij begon met het project omdat hij het copy-pasten zat was.</p>
+                    <p class="lead">De <mark>#raad071 kalender</mark> wordt ontwikkeld en onderhouden door <a href="https://twitter.com/mdirkse">Maarten Dirkse</a>. Maarten is duo-raadslid voor de <a href="http://www.vvdleiden.nl">VVD Leiden</a>. Hij begon met het project omdat hij het copy-pasten zat was.</p>
                 </div>
                 <div class="col-lg-5 col-lg-offset-2 col-sm-6">
-                    <img class="img-responsive img-rounded" src="img/mdirkse.png" alt="">
+                    <img class="img-responsive img-rounded" src="img/mdirkse.jpg" alt="">
                 </div>
             </div>
         </div>
         <!-- /.container -->
     </div>
     <!-- /.content-section-a -->
+
+    <a  name="author"></a>
+    <div class="content-section-b">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                    <hr class="section-heading-spacer">
+                    <div class="clearfix"></div>
+                    <h2 class="section-heading">FAQ</h2>
+                    <p class="lead">
+                        <strong>Hoe up-to-date is de #raad071 kalender?</strong><br/>
+                        De informatie in <mark>#raad071 kalender</mark> komt direct van de <a href="https://leiden.notudoc.nl/cgi-bin/homepage.cgi">Leidse gemeenteraadssite</a> en wordt elke 6 uur automatisch bijgewerkt. Dit betekent dat wijzigingen in de kalender op de raadswebsite maximaal 6 uur later in de #raad071 kalender verschijnen. Overigens is het wel zo dat het wat langer kan duren, tot 24 uur, totdat bijvoorbeeld een dienst als Google Calendar de geupdatete kalender items doorvoert.
+                    </p>
+                    <p class="lead">
+                        <strong>De "voeg toe aan mijn agenda" knop werkt voor mij niet. Hoe kan ik toch de #raad071 kalender gebruiken?</strong><br/>
+                        De <mark>#raad071 kalender</mark> wordt beschikbaar gesteld als een <a href="https://en.wikipedia.org/wiki/ICalendar">iCalendar</a> bestand. Dit is een kalenderformaat dat de meeste digitale agenda's begrijpen. Als de "voeg toe" knop niet werkt is het altijd mogelijk om de kalender handmatig toe te voegen. Hiervoor heb je het adres van de kalender nodig. Deze begint met <code>webcal://</code> en is <a href="#">bovendaan deze pagina</a> te vinden. Hieronder staat een lijst met instructies over hoe je iCalendar bestanden integreert met de meest-gebruikte digitale agenda's:
+                    </p>
+                    <ul>
+                        <li><a href="https://support.apple.com/en-us/HT202361">Apple Calendar</a></li>
+                        <li><a href="https://support.google.com/calendar/answer/37118?hl=en">Google Calendar</a></li>
+                        <li><a href="https://support.office.com/en-us/article/View-and-subscribe-to-Internet-Calendars-f6248506-e144-4508-b658-c838b6067597#bm2">Microsoft Outlook</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /.content-section-b -->
 
 	<a  name="tech"></a>
     <div class="banner">
@@ -150,10 +181,16 @@
                 <div class="col-lg-6">
                     <ul class="list-inline banner-social-buttons">
                         <li>
-                            <a href="https://hub.docker.com/r/mdirkse/raad071cal/" class="btn btn-default btn-lg"><i class="fa fa-cube fa-fw"></i> <span class="network-name">Docker Hub</span></a>
+                            <a href="https://hub.docker.com/r/mdirkse/raad071cal/" class="btn btn-default btn-lg" title="Download de Docker image van dit project van de Docker Hub.">
+                                <i class="fa fa-cube fa-fw"></i>
+                                <span class="network-name">Docker Hub</span>
+                            </a>
                         </li>
                         <li>
-                            <a href="https://github.com/mdirkse/raad071cal" class="btn btn-default btn-lg"><i class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                            <a href="https://github.com/mdirkse/raad071cal" class="btn btn-default btn-lg" title="Bekijk de broncode van dit project op GitHub.">
+                                <i class="fa fa-github fa-fw"></i>
+                                <span class="network-name">Github</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
@@ -175,7 +212,10 @@
                         <li class="footer-menu-divider">&sdot;</li>
                         <li><a href="#instructions">Handleiding</a></li>
                         <li class="footer-menu-divider">&sdot;</li>
+                        <li><a href="#faq">FAQ</a></li>
+                        <li class="footer-menu-divider">&sdot;</li>
                         <li><a href="#author">Auteur</a></li>
+                        <li class="footer-menu-divider">&sdot;</li>
                         <li><a href="#tech">Technologie</a></li>
                     </ul>
                     <p class="copyright text-muted small">Copyright &copy; Maarten Dirkse 2016. All Rights Reserved</p>

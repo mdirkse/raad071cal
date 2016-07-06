@@ -42,7 +42,7 @@ X-PUBLISHED-TTL:PT6H
 
 var (
 	logger     log.Logger
-	calItems   *[]*CalItem
+	calItems   []*CalItem
 	cestTz     *time.Location
 	cronT      *cron.Cron
 	cutoffDate time.Time
@@ -74,8 +74,7 @@ func initCalFetcherVars() {
 	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, cestTz)
 	itemsRegex = regexp.MustCompile(`var vdate='(.+)'.split\(`)
 
-	emptyCal := []*CalItem{}
-	calItems = &emptyCal
+	calItems = []*CalItem{}
 
 	initCalItemVars()
 }
@@ -113,7 +112,7 @@ func fetchCalenderPage(calendarURL string) (*[]byte, error) {
 	return &bytes, nil
 }
 
-func parseCalendar(pageBytes *[]byte) (*[]*CalItem, error) {
+func parseCalendar(pageBytes *[]byte) ([]*CalItem, error) {
 	logger.Info("Parsing the calendar.")
 	start := time.Now()
 
@@ -143,7 +142,7 @@ func parseCalendar(pageBytes *[]byte) (*[]*CalItem, error) {
 
 	logger.Info(fmt.Sprintf("Parsed %d calendar items in %0.3f seconds.", len(items), time.Since(start).Seconds()))
 
-	return &items, nil
+	return items, nil
 }
 
 func loggingHandler(h http.Handler) http.Handler {
@@ -164,21 +163,21 @@ func calHandler() http.Handler {
 	})
 }
 
-func renderCalendar(items *[]*CalItem, w io.Writer) error {
+func renderCalendar(items []*CalItem, w io.Writer) error {
 	start := time.Now()
 
-	_, err := w.Write([]byte(calendarHeader))
+	_, err := io.WriteString(w, calendarHeader)
 
 	if err != nil {
 		return fmt.Errorf("Could not write calendar!")
 	}
 
-	for _, c := range *items {
+	for _, c := range items {
 		c.RenderItem(w)
-		w.Write([]byte("\n"))
+		io.WriteString(w, "\n")
 	}
 
-	w.Write([]byte("END:VCALENDAR"))
+	io.WriteString(w, "END:VCALENDAR")
 
 	logger.Debug(fmt.Sprintf("Rendered iCal calendar in %0.3f seconds.", time.Since(start).Seconds()))
 

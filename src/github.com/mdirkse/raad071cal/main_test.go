@@ -38,8 +38,8 @@ func TestParseCalendarShouldYieldItems(t *testing.T) {
 		b, _ := ioutil.ReadFile(pt.location)
 		items, _ := parseCalendar(&b)
 
-		if len(*items) != pt.totalItems {
-			t.Fatalf("Amount returned items does not match! Expected %d but got %d.", pt.totalItems, len(*items))
+		if len(items) != pt.totalItems {
+			t.Fatalf("Amount returned items does not match! Expected %d but got %d.", pt.totalItems, len(items))
 		}
 
 	}
@@ -79,7 +79,7 @@ func TestRenderCalendarShouldYieldCorrectOutput(t *testing.T) {
 
 	for _, ct := range iCals {
 		var result bytes.Buffer
-		renderCalendar(&ct.items, &result)
+		renderCalendar(ct.items, &result)
 
 		b, _ := ioutil.ReadFile(ct.location)
 		expected := string(b)

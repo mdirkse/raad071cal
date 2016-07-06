@@ -62,7 +62,7 @@ type CalItem struct {
 
 func initCalItemVars() {
 	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, cestTz)
-	itemTemplate, _ = template.New("item").Parse(itemTemplateSrc)
+	itemTemplate = template.Must(template.New("item").Parse(itemTemplateSrc))
 }
 
 // NewItem creates a new calendar item from a string input

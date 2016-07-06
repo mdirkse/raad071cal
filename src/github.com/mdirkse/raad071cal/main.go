@@ -22,6 +22,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -47,6 +48,7 @@ var (
 	cronT      *cron.Cron
 	cutoffDate time.Time
 	itemsRegex *regexp.Regexp
+	mutex      sync.RWMutex
 )
 
 func main() {
@@ -92,7 +94,9 @@ func loadCalendarItems() {
 		return
 	}
 
-	calItems = newCalItems // IS THIS THREAD-SAFE?
+	mutex.Lock()
+	defer mutex.Unlock()
+	calItems = newCalItems
 }
 
 func fetchCalenderPage(calendarURL string) (*[]byte, error) {
@@ -172,10 +176,12 @@ func renderCalendar(items []*CalItem, w io.Writer) error {
 		return fmt.Errorf("Could not write calendar!")
 	}
 
+	mutex.RLock()
 	for _, c := range items {
 		c.RenderItem(w)
 		io.WriteString(w, "\n")
 	}
+	mutex.RUnlock()
 
 	io.WriteString(w, "END:VCALENDAR")
 

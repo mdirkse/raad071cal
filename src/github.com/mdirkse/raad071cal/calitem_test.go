@@ -58,21 +58,21 @@ func TestVariousSpecialCasesForMeetingDuration(t *testing.T) {
 	// Gemeenteraad should always last 'till 21h UTC
 	gr21, _ := NewItem("2016-06-23!16:00 uur!gemeenteraad!#!/some-url/here!is-agenda!raadzaal!gemeenteraad", GetTestTime())
 	if gr21.EndDateTime.Hour() != 21 {
-		t.Fatalf("Gemeenteraad item has wrong end time. Expected 21 but was %d!", gr21.EndDateTime.Hour())
+		t.Errorf("Gemeenteraad item has wrong end time. Expected 21 but was %d!", gr21.EndDateTime.Hour())
 	}
 
 	// College should always last 3h
 	col3h, _ := NewItem("2016-06-23!16:00 uur!College Burgemeester en Wethouders!#!/some-url/here!is-agenda!raadzaal!gemeenteraad", GetTestTime())
 	col3hDuration := col3h.EndDateTime.Sub(col3h.StartDateTime).Hours()
 	if col3hDuration != 3 {
-		t.Fatalf("College lasted wrong amount of hours. Expected 3 but was %f!", col3hDuration)
+		t.Errorf("College lasted wrong amount of hours. Expected 3 but was %f!", col3hDuration)
 	}
 
 	// Commissie should always last 3h
 	comm3h, _ := NewItem("2016-06-23!16:00 uur!College Burgemeester en Wethouders!#!/some-url/here!is-agenda!raadzaal!gemeenteraad", GetTestTime())
 	comm3hDuration := comm3h.EndDateTime.Sub(comm3h.StartDateTime).Hours()
 	if col3hDuration != 3 {
-		t.Fatalf("Commission lasted wrong amount of hours. Expected 3 but was %f!", comm3hDuration)
+		t.Errorf("Commission lasted wrong amount of hours. Expected 3 but was %f!", comm3hDuration)
 	}
 }
 

@@ -16,9 +16,9 @@ package main
 import (
 	"fmt"
 	"github.com/robfig/cron"
-	log "gopkg.in/inconshreveable/log15.v2"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"regexp"
 	"strings"
@@ -42,7 +42,6 @@ X-PUBLISHED-TTL:PT6H
 )
 
 var (
-	logger     log.Logger
 	calItems   []*CalItem
 	cestTz     *time.Location
 	cronT      *cron.Cron
@@ -53,24 +52,23 @@ var (
 
 func main() {
 	initCalFetcherVars()
-	logger.Info("Starting raad071cal")
+	log.Println("Starting raad071cal")
 
 	// Configure periodic polling
-	logger.Info(fmt.Sprintf("Polling source calendar [%s] every 6 hours.", raad071CalendarURL))
+	log.Printf("Polling source calendar [%s] every 6 hours.", raad071CalendarURL)
 	cronT.AddFunc("1 1 */6 * * *", loadCalendarItems)
 	cronT.Start()
 
 	http.Handle("/kalender/alles.ics", loggingHandler(calHandler()))
 	http.Handle("/", loggingHandler(http.FileServer(http.Dir("html"))))
 
-	logger.Info(fmt.Sprintf("Fully initialised and listening on [%s].", listenAddress))
+	log.Printf("Fully initialised and listening on [%s].", listenAddress)
 	go loadCalendarItems() // do initial load
 
 	http.ListenAndServe(listenAddress, nil)
 }
 
 func initCalFetcherVars() {
-	logger = log.New()
 	cestTz, _ = time.LoadLocation("Europe/Amsterdam")
 	cronT = cron.New()
 	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, cestTz)
@@ -84,13 +82,13 @@ func initCalFetcherVars() {
 func loadCalendarItems() {
 	pageBytes, err := fetchCalenderPage(raad071CalendarURL)
 	if err != nil {
-		logger.Error(fmt.Sprintf("Unable to fetch the calendar page: %+v", err))
+		log.Printf("ERROR - Unable to fetch the calendar page: %+v", err)
 		return
 	}
 
 	newCalItems, err := parseCalendar(pageBytes)
 	if err != nil {
-		logger.Error(fmt.Sprintf("Unable to parse the calendar: %+v", err))
+		log.Printf("ERROR - Unable to parse the calendar: %+v", err)
 		return
 	}
 
@@ -112,12 +110,12 @@ func fetchCalenderPage(calendarURL string) (*[]byte, error) {
 		return nil, fmt.Errorf("Could not read the calender URL contents: %+v", err)
 	}
 
-	logger.Debug(fmt.Sprintf("Fetched calendar in %0.2f seconds.", time.Since(start).Seconds()))
+	log.Printf("Fetched calendar in %0.2f seconds.", time.Since(start).Seconds())
 	return &bytes, nil
 }
 
 func parseCalendar(pageBytes *[]byte) ([]*CalItem, error) {
-	logger.Info("Parsing the calendar.")
+	log.Printf("Parsing the calendar.")
 	start := time.Now()
 
 	runStart := time.Now()
@@ -135,7 +133,7 @@ func parseCalendar(pageBytes *[]byte) ([]*CalItem, error) {
 		i, err := NewItem(c, runStart)
 
 		if err != nil {
-			logger.Error(fmt.Sprintf("Unable to parse item [%s]: %+v", c, err))
+			log.Printf("ERROR - Unable to parse item [%s]: %+v", c, err)
 			continue
 		}
 
@@ -144,14 +142,14 @@ func parseCalendar(pageBytes *[]byte) ([]*CalItem, error) {
 		}
 	}
 
-	logger.Info(fmt.Sprintf("Parsed %d calendar items in %0.3f seconds.", len(items), time.Since(start).Seconds()))
+	log.Printf("Parsed %d calendar items in %0.3f seconds.", len(items), time.Since(start).Seconds())
 
 	return items, nil
 }
 
 func loggingHandler(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Debug(fmt.Sprintf("[%s] [%s] %s", r.RemoteAddr, r.Method, r.URL.Path))
+		log.Printf("[%s] [%s] %s", r.RemoteAddr, r.Method, r.URL.Path)
 		h.ServeHTTP(w, r)
 	})
 }
@@ -185,7 +183,7 @@ func renderCalendar(items []*CalItem, w io.Writer) error {
 
 	io.WriteString(w, "END:VCALENDAR")
 
-	logger.Debug(fmt.Sprintf("Rendered iCal calendar in %0.3f seconds.", time.Since(start).Seconds()))
+	log.Printf("Rendered iCal calendar in %0.3f seconds.", time.Since(start).Seconds())
 
 	return nil
 }

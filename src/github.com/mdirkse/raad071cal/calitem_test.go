@@ -21,8 +21,6 @@ import (
 )
 
 func TestParseValidItemShouldYieldCorrectStruct(t *testing.T) {
-	initCalFetcherVars()
-
 	testSet := []struct {
 		expected *CalItem
 		input    string
@@ -41,8 +39,6 @@ func TestParseValidItemShouldYieldCorrectStruct(t *testing.T) {
 }
 
 func TestParseItemWithInvalidDateShouldYieldAnError(t *testing.T) {
-	initCalFetcherVars()
-
 	tstInput := "2016-06-23!16:safdsfd!!!!!!"
 
 	_, err := NewItem(tstInput, GetTestTime())
@@ -53,8 +49,6 @@ func TestParseItemWithInvalidDateShouldYieldAnError(t *testing.T) {
 }
 
 func TestVariousSpecialCasesForMeetingDuration(t *testing.T) {
-	initCalFetcherVars()
-
 	// Gemeenteraad should always last 'till 21h UTC
 	gr21, _ := NewItem("2016-06-23!16:00 uur!gemeenteraad!#!/some-url/here!is-agenda!raadzaal!gemeenteraad", GetTestTime())
 	if gr21.EndDateTime.Hour() != 21 {
@@ -77,8 +71,6 @@ func TestVariousSpecialCasesForMeetingDuration(t *testing.T) {
 }
 
 func TestRenderItemShouldYieldCorrectICalEvent(t *testing.T) {
-	initCalFetcherVars()
-
 	testSet := []struct {
 		input    *CalItem
 		expected string

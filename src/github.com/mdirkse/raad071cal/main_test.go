@@ -16,15 +16,19 @@ package main
 import (
 	"bytes"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 )
 
-func TestParseCalendarShouldYieldItems(t *testing.T) {
+func TestMain(m *testing.M) {
 	initCalFetcherVars()
+	code := m.Run()
+	os.Exit(code)
+}
 
+func TestParseCalendarShouldYieldItems(t *testing.T) {
 	var files = []struct {
 		location   string
 		totalItems int
@@ -46,8 +50,6 @@ func TestParseCalendarShouldYieldItems(t *testing.T) {
 }
 
 func TestParseCalenderWithWrongInputShouldYieldError(t *testing.T) {
-	initCalFetcherVars()
-
 	nonsenseCalSource := []byte("the regex will not trigger on this string")
 	_, err := parseCalendar(&nonsenseCalSource)
 
@@ -57,8 +59,6 @@ func TestParseCalenderWithWrongInputShouldYieldError(t *testing.T) {
 }
 
 func TestFetchCalenderPageWithBrokenUrlShouldYieldError(t *testing.T) {
-	initCalFetcherVars()
-
 	_, err := fetchCalenderPage("http://localhost:60606")
 
 	if err == nil {
@@ -67,8 +67,6 @@ func TestFetchCalenderPageWithBrokenUrlShouldYieldError(t *testing.T) {
 }
 
 func TestRenderCalendarShouldYieldCorrectOutput(t *testing.T) {
-	initCalFetcherVars()
-
 	var iCals = []struct {
 		location string
 		items    []*CalItem
@@ -91,12 +89,7 @@ func TestRenderCalendarShouldYieldCorrectOutput(t *testing.T) {
 }
 
 func TestHttpEndpointRequestShouldYieldCorrectOutput(t *testing.T) {
-	initCalFetcherVars()
-
-	req, err := http.NewRequest("GET", "http://bla.com", nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	req, _ := http.NewRequest("GET", "http://bla.com", nil)
 
 	w := httptest.NewRecorder()
 	calHandler().ServeHTTP(w, req)

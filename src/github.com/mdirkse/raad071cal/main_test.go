@@ -69,10 +69,10 @@ func TestFetchCalenderPageWithBrokenUrlShouldYieldError(t *testing.T) {
 func TestRenderCalendarShouldYieldCorrectOutput(t *testing.T) {
 	var iCals = []struct {
 		location string
-		items    []*CalItem
+		items    []CalItem
 	}{
-		{"../../../../testfiles/test.ical", []*CalItem{GetTestItem1(), GetTestItem2()}},
-		{"../../../../testfiles/empty.ical", []*CalItem{}},
+		{"../../../../testfiles/test.ical", []CalItem{GetTestItem1(), GetTestItem2()}},
+		{"../../../../testfiles/empty.ical", []CalItem{}},
 	}
 
 	for _, ct := range iCals {

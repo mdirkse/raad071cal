@@ -22,7 +22,7 @@ import (
 
 func TestParseValidItemShouldYieldCorrectStruct(t *testing.T) {
 	testSet := []struct {
-		expected *CalItem
+		expected CalItem
 		input    string
 	}{
 		{GetTestItem1(), "2016-06-23!!The rent!#!http://what.have.you/done/for/me/lately.pdf!is-agenda!My house!80's women"},
@@ -72,7 +72,7 @@ func TestVariousSpecialCasesForMeetingDuration(t *testing.T) {
 
 func TestRenderItemShouldYieldCorrectICalEvent(t *testing.T) {
 	testSet := []struct {
-		input    *CalItem
+		input    CalItem
 		expected string
 	}{
 		{GetTestItem1(), GetRenderedTestItem1()},
@@ -89,8 +89,8 @@ func TestRenderItemShouldYieldCorrectICalEvent(t *testing.T) {
 	}
 }
 
-func GetTestItem1() *CalItem {
-	return &CalItem{
+func GetTestItem1() CalItem {
+	return CalItem{
 		UID:             "14c88381339fffd3963618fe8cf93825",
 		AllDay:          true,
 		CreatedDateTime: GetTestTime().In(time.UTC),
@@ -115,8 +115,8 @@ LOCATION:My house
 END:VEVENT`
 }
 
-func GetTestItem2() *CalItem {
-	return &CalItem{
+func GetTestItem2() CalItem {
+	return CalItem{
 		UID:             "37384d42f0c7fe4ad6103b2b7344bbe7",
 		CreatedDateTime: GetTestTime().In(time.UTC),
 		URL:             agendaURLPrefix + "/some-url/here",

@@ -66,7 +66,7 @@ func initCalItemVars() {
 }
 
 // NewItem creates a new calendar item from a string input
-func NewItem(i string, runStart time.Time) (*CalItem, error) {
+func NewItem(i string, runStart time.Time) (CalItem, error) {
 	fields := strings.Split(i, "!")
 
 	var st time.Time
@@ -85,13 +85,13 @@ func NewItem(i string, runStart time.Time) (*CalItem, error) {
 	}
 
 	if err != nil {
-		return nil, fmt.Errorf("Unable to parse event date: %+v", err)
+		return CalItem{}, fmt.Errorf("Unable to parse event date: %+v", err)
 	}
 
 	// Change to UTC because that's what the iCal format likes best
 	stUTC := st.In(time.UTC)
 
-	return &CalItem{
+	return CalItem{
 		UID:             generateID(stUTC, fields[2]),
 		AllDay:          allDay,
 		CreatedDateTime: runStart.In(time.UTC),

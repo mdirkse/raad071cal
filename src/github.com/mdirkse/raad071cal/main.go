@@ -42,7 +42,7 @@ X-PUBLISHED-TTL:PT6H
 )
 
 var (
-	calItems   []*CalItem
+	calItems   []CalItem
 	cestTz     *time.Location
 	cronT      *cron.Cron
 	cutoffDate time.Time
@@ -74,7 +74,7 @@ func initCalFetcherVars() {
 	cutoffDate = time.Date(2015, 1, 1, 0, 0, 0, 0, cestTz)
 	itemsRegex = regexp.MustCompile(`var vdate='(.+)'.split\(`)
 
-	calItems = []*CalItem{}
+	calItems = []CalItem{}
 
 	initCalItemVars()
 }
@@ -114,7 +114,7 @@ func fetchCalenderPage(calendarURL string) (*[]byte, error) {
 	return &bytes, nil
 }
 
-func parseCalendar(pageBytes *[]byte) ([]*CalItem, error) {
+func parseCalendar(pageBytes *[]byte) ([]CalItem, error) {
 	log.Printf("Parsing the calendar.")
 	start := time.Now()
 
@@ -127,7 +127,7 @@ func parseCalendar(pageBytes *[]byte) ([]*CalItem, error) {
 
 	calText := string(calBytes[1])
 	rawItems := strings.Split(calText, "@")
-	items := make([]*CalItem, 0, len(rawItems))
+	items := make([]CalItem, 0, len(rawItems))
 
 	for _, c := range rawItems {
 		i, err := NewItem(c, runStart)
@@ -165,7 +165,7 @@ func calHandler() http.Handler {
 	})
 }
 
-func renderCalendar(items []*CalItem, w io.Writer) error {
+func renderCalendar(items []CalItem, w io.Writer) error {
 	start := time.Now()
 
 	_, err := io.WriteString(w, calendarHeader)

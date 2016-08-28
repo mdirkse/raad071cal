@@ -1,0 +1,88 @@
+{
+  "success": true,
+  "request": "leiden.notubiz.nl/api/calendar/callback_function?year=2016&month=8&callback=raad071cal&bustCache=0.8611070959477134",
+  "meetings": [
+    {
+      "id": 247977,
+      "canceled": false,
+      "description": "Einde zomerreces",
+      "confidential": 0,
+      "location": "",
+      "long_description": "",
+      "short_description": null,
+      "commissie": 0,
+      "link": "",
+      "documents": [],
+      "date": "23-06-2016",
+      "time": "00:00"
+    },
+    {
+      "id": 247981,
+      "canceled": false,
+      "description": "Instructiebijeenkomst Raad071Cal",
+      "confidential": 0,
+      "location": "Raadzaal",
+      "long_description": "<p>Hoe werkt iCal?</p>",
+      "short_description": null,
+      "commissie": 994,
+      "link": "/raad071cal.html",
+      "documents": [
+        {
+          "title": "iCal spec",
+          "url": "https://www.ietf.org/rfc/rfc2445.txt",
+          "confidential": 0,
+          "file_type": "txt"
+        },
+        {
+          "title": "History of the calendar",
+          "url": "https://en.wikipedia.org/wiki/Calendar",
+          "confidential": 0,
+          "file_type": "pdf"
+        }
+      ],
+      "date": "23-06-2016",
+      "time": "19:00"
+    },
+    {
+      "id": 247980,
+      "canceled": false,
+      "description": "raadscommissie Stedelijke Ontwikkeling",
+      "confidential": 0,
+      "location": "Commissiekamer",
+      "long_description": "<p>Hierbij wordt u uitgenodigd voor de openbare vergadering van de raadscommissie Stedelijke Ontwikkeling</p>",
+      "short_description": "SO",
+      "commissie": 4366,
+      "link": "/vergadering/247980/raadscommissie%20Stedelijke%20Ontwikkeling 01-09-2016",
+      "documents": [],
+      "date": "23-06-2016",
+      "time": "20:00"
+    }
+  ],
+  "categories": [
+    {
+      "id": 6049,
+      "short": "Overig",
+      "long": "Overige evenementen"
+    },
+    {
+      "id": 992,
+      "short": "LB",
+      "long": "raadscommissie Leefbaarheid en Bereikbaarheid"
+    },
+    {
+      "id": 4365,
+      "short": "WM",
+      "long": "raadscommissie Werk en Middelen"
+    },
+    {
+      "id": 994,
+      "short": "OS",
+      "long": "raadscommissie Onderwijs en Samenleving"
+    },
+    {
+      "id": 4366,
+      "short": "SO",
+      "long": "raadscommissie Stedelijke Ontwikkeling"
+    }
+  ]
+}

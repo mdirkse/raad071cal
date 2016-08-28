@@ -16,57 +16,65 @@ package main
 import (
 	"bytes"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
+	"unicode"
 )
 
-func TestParseValidItemShouldYieldCorrectStruct(t *testing.T) {
+const (
+	testDateFormat = "02-01-2006"
+)
+
+func TestItemsShouldBeEnrichedCorrectly(t *testing.T) {
 	testSet := []struct {
 		expected CalItem
-		input    string
+		input    CalItem
 	}{
-		{GetTestItem1(), "2016-06-23!!The rent!#!http://what.have.you/done/for/me/lately.pdf!is-agenda!My house!80's women"},
-		{GetTestItem2(), "2016-06-23!20:00 uur!gemeenteraad!#!/some-url/here!is-agenda!raadzaal!gemeenteraad"},
+		{GetTestItem1(), deEnrich(GetTestItem1())},
+		{GetTestItem2(), deEnrich(GetTestItem2())},
+		{GetTestItem3(), deEnrich(GetTestItem3())},
 	}
 
 	for _, i := range testSet {
-		result, _ := NewItem(i.input, GetTestTime())
+		result, _ := EnrichItem(i.input, GetTestTime())
 
 		if !reflect.DeepEqual(i.expected, result) {
-			t.Fatalf("Test item incorrectly parsed! \n Expected [%+v] \n but got  [%+v]!", i.expected, result)
+			t.Errorf("Test item incorrectly parsed! \n Expected [%+v] \n but got  [%+v]!", i.expected, result)
 		}
 	}
 }
 
 func TestParseItemWithInvalidDateShouldYieldAnError(t *testing.T) {
-	tstInput := "2016-06-23!16:safdsfd!!!!!!"
+	tstInput := GetTestItem1()
+	tstInput.Date = "bladibla"
 
-	_, err := NewItem(tstInput, GetTestTime())
+	_, err := EnrichItem(tstInput, GetTestTime())
 
 	if err == nil {
-		t.Fatalf("Test item incorrectly parsed when it shouldn't have been!")
+		t.Fatal("Faulty test item parsed when it shouldn't have been!")
 	}
 }
 
 func TestVariousSpecialCasesForMeetingDuration(t *testing.T) {
 	// Gemeenteraad should always last 'till 21h UTC
-	gr21, _ := NewItem("2016-06-23!16:00 uur!gemeenteraad!#!/some-url/here!is-agenda!raadzaal!gemeenteraad", GetTestTime())
+	gri := deEnrich(GetTestItem1())
+	gri.Description = "Gemeenteraad"
+	gri.Time = "16:00"
+	gr21, _ := EnrichItem(gri, GetTestTime())
 	if gr21.EndDateTime.Hour() != 21 {
 		t.Errorf("Gemeenteraad item has wrong end time. Expected 21 but was %d!", gr21.EndDateTime.Hour())
 	}
 
 	// College should always last 3h
-	col3h, _ := NewItem("2016-06-23!16:00 uur!College Burgemeester en Wethouders!#!/some-url/here!is-agenda!raadzaal!gemeenteraad", GetTestTime())
+
+	ci := deEnrich(GetTestItem1())
+	ci.Description = "College Burgemeester en Wethouders"
+	ci.Time = "16:00"
+	col3h, _ := EnrichItem(ci, GetTestTime())
 	col3hDuration := col3h.EndDateTime.Sub(col3h.StartDateTime).Hours()
 	if col3hDuration != 3 {
 		t.Errorf("College lasted wrong amount of hours. Expected 3 but was %f!", col3hDuration)
-	}
-
-	// Commissie should always last 3h
-	comm3h, _ := NewItem("2016-06-23!16:00 uur!College Burgemeester en Wethouders!#!/some-url/here!is-agenda!raadzaal!gemeenteraad", GetTestTime())
-	comm3hDuration := comm3h.EndDateTime.Sub(comm3h.StartDateTime).Hours()
-	if col3hDuration != 3 {
-		t.Errorf("Commission lasted wrong amount of hours. Expected 3 but was %f!", comm3hDuration)
 	}
 }
 
@@ -77,66 +85,132 @@ func TestRenderItemShouldYieldCorrectICalEvent(t *testing.T) {
 	}{
 		{GetTestItem1(), GetRenderedTestItem1()},
 		{GetTestItem2(), GetRenderedTestItem2()},
+		{GetTestItem3(), GetRenderedTestItem3()},
 	}
 
 	for _, i := range testSet {
 		var result bytes.Buffer
-		i.input.RenderItem(&result)
+		err := i.input.RenderItem(&result)
+
+		if err != nil {
+			t.Errorf("Unable to render test item! Error: [%+v]", err)
+		}
 
 		if i.expected != result.String() {
-			t.Fatalf("Test item incorrectly rendered! Expected \n[%s] \nbut got\n[%s]!", i.expected, result.String())
+			t.Errorf("Test item incorrectly rendered! Expected \n[%s] \nbut got\n[%s]!", i.expected, result.String())
 		}
 	}
 }
 
+func deEnrich(i CalItem) CalItem {
+	i.UID = ""
+	i.AllDay = false
+	i.Link = strings.Replace(i.Link, agendaURLPrefix, "", 1)
+	i.Location = strings.Split(i.Location, ",")[0]
+	i.CreatedDateTime = time.Time{}
+	i.StartDateTime = time.Time{}
+	i.EndDateTime = time.Time{}
+
+	// Lowercase first letter of description
+	d := []rune(i.Description)
+	d[0] = unicode.ToLower(d[0])
+	i.Description = string(d)
+
+	return i
+}
+
 func GetTestItem1() CalItem {
+	iTime := GetTestTime().Add(-14 * time.Hour)
+
 	return CalItem{
-		UID:             "14c88381339fffd3963618fe8cf93825",
+		UID:             "e058fd25aa867090dd7e25c9455d7156",
 		AllDay:          true,
+		Documents:       []document{},
+		Link:            "",
+		Location:        "",
+		Description:     "Einde zomerreces",
+		Date:            iTime.Format(testDateFormat),
+		Time:            "00:00",
 		CreatedDateTime: GetTestTime().In(time.UTC),
-		URL:             "http://what.have.you/done/for/me/lately.pdf",
-		EndDateTime:     GetTestTime().Add(-14 * time.Hour).In(time.UTC), // Correct to 0 hours for allDay
-		Location:        "My house",
-		Name:            "The Rent",
-		Organizer:       "80'S Women",
-		StartDateTime:   GetTestTime().Add(-14 * time.Hour).In(time.UTC), // Correct to 0 hours for allDay
+		StartDateTime:   iTime.In(time.UTC), // Correct to 0 hours for allDay
+		EndDateTime:     iTime.In(time.UTC), // Correct to 0 hours for allDay
 	}
 }
 
 func GetRenderedTestItem1() string {
 	return `BEGIN:VEVENT
-UID:14c88381339fffd3963618fe8cf93825@raad071.mdirkse.nl
+UID:e058fd25aa867090dd7e25c9455d7156@raad071.mdirkse.nl
 DTSTAMP:20160623T140000Z
 DTSTART;VALUE=DATE:20160623
 DTEND;VALUE=DATE:20160623
-SUMMARY:The Rent
-DESCRIPTION:Organisator: 80'S Women\nStukken: http://what.have.you/done/for/me/lately.pdf
-LOCATION:My house
+SUMMARY:Einde zomerreces
+DESCRIPTION:
+LOCATION:
 END:VEVENT`
 }
 
 func GetTestItem2() CalItem {
 	return CalItem{
-		UID:             "37384d42f0c7fe4ad6103b2b7344bbe7",
+		UID:         "a2dc05212385ac8b98a4ded4e09e952c",
+		AllDay:      false,
+		Link:        agendaURLPrefix + "/raad071cal.html",
+		Location:    "Raadzaal, Stadhuis, Leiden",
+		Description: "Instructiebijeenkomst Raad071Cal",
+		Documents: []document{
+			{
+				Title: "iCal spec",
+				URL:   "https://www.ietf.org/rfc/rfc2445.txt",
+			},
+			{
+				Title: "History of the calendar",
+				URL:   "https://en.wikipedia.org/wiki/Calendar",
+			},
+		},
+		Date:            GetTestTime().Add(4 * time.Hour).Format(testDateFormat),
+		Time:            "19:00",
 		CreatedDateTime: GetTestTime().In(time.UTC),
-		URL:             agendaURLPrefix + "/some-url/here",
-		EndDateTime:     GetTestTime().In(time.UTC).Add(7 * time.Hour),
-		Location:        "Raadzaal, Stadhuis, Leiden",
-		Name:            "Gemeenteraad",
-		Organizer:       "Gemeenteraad",
-		StartDateTime:   GetTestTime().In(time.UTC).Add(4 * time.Hour),
+		StartDateTime:   GetTestTime().In(time.UTC).Add(3 * time.Hour),
+		EndDateTime:     GetTestTime().In(time.UTC).Add(5 * time.Hour),
 	}
 }
 
 func GetRenderedTestItem2() string {
 	return `BEGIN:VEVENT
-UID:37384d42f0c7fe4ad6103b2b7344bbe7@raad071.mdirkse.nl
+UID:a2dc05212385ac8b98a4ded4e09e952c@raad071.mdirkse.nl
+DTSTAMP:20160623T140000Z
+DTSTART:20160623T170000Z
+DTEND:20160623T190000Z
+SUMMARY:Instructiebijeenkomst Raad071Cal
+DESCRIPTION:Notubiz link: https://leiden.notubiz.nl/raad071cal.html\nDocuments:\n- iCal spec https://www.ietf.org/rfc/rfc2445.txt\n- History of the calendar https://en.wikipedia.org/wiki/Calendar\n
+LOCATION:Raadzaal, Stadhuis, Leiden
+END:VEVENT`
+}
+
+func GetTestItem3() CalItem {
+	return CalItem{
+		UID:             "7599ab178274a0adcbee1b7e80f72bed",
+		AllDay:          false,
+		Documents:       []document{},
+		Link:            agendaURLPrefix + "/vergadering/247980/raadscommissie%20Stedelijke%20Ontwikkeling%2001-09-2016",
+		Location:        "Commissiekamer, Stadhuis, Leiden",
+		Description:     "Raadscommissie Stedelijke Ontwikkeling",
+		Date:            GetTestTime().Add(4 * time.Hour).Format(testDateFormat),
+		Time:            "20:00",
+		CreatedDateTime: GetTestTime().In(time.UTC),
+		StartDateTime:   GetTestTime().In(time.UTC).Add(4 * time.Hour),
+		EndDateTime:     GetTestTime().In(time.UTC).Add(7 * time.Hour),
+	}
+}
+
+func GetRenderedTestItem3() string {
+	return `BEGIN:VEVENT
+UID:7599ab178274a0adcbee1b7e80f72bed@raad071.mdirkse.nl
 DTSTAMP:20160623T140000Z
 DTSTART:20160623T180000Z
 DTEND:20160623T210000Z
-SUMMARY:Gemeenteraad
-DESCRIPTION:Organisator: Gemeenteraad\nStukken: https://leiden.notudoc.nl/some-url/here
-LOCATION:Raadzaal, Stadhuis, Leiden
+SUMMARY:Raadscommissie Stedelijke Ontwikkeling
+DESCRIPTION:Notubiz link: https://leiden.notubiz.nl/vergadering/247980/raadscommissie%20Stedelijke%20Ontwikkeling%2001-09-2016\n
+LOCATION:Commissiekamer, Stadhuis, Leiden
 END:VEVENT`
 }
 

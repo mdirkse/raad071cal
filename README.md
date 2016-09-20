@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/mdirkse/raad071cal.svg?branch=master)](https://travis-ci.org/mdirkse/raad071cal)
 [![Coverage](https://codecov.io/gh/mdirkse/raad071cal/branch/master/graph/badge.svg)](https://codecov.io/gh/mdirkse/raad071cal)
+[![Go Report Card](https://goreportcard.com/badge/github.com/mdirkse/raad071cal)](https://goreportcard.com/report/github.com/mdirkse/raad071cal)
 
 # Raad 071 Cal
 The Notubiz Politiek Portaal system for Leiden does not expose public municipal council events in iCal format. This small and simple web service remedies that omission by

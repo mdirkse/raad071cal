@@ -1,0 +1,462 @@
+{
+  "success":true,
+  "request":"leiden.notubiz.nl\/api\/calendar\/callback_function?year=2016&month=7&callback=callback_function&_=1478792702103",
+  "meetings":[
+    {
+      "id":207704,
+      "canceled":false,
+      "description":"AB Omgevingsdienst WH",
+      "confidential":0,
+      "location":"",
+      "long_description":"",
+      "short_description":null,
+      "commissie":0,
+      "link":"",
+      "documents":[
+
+      ],
+      "date":"04-07-2016",
+      "time":"17:00"
+    },
+    {
+      "id":301272,
+      "canceled":false,
+      "description":"Gemeenteraad",
+      "confidential":0,
+      "location":"Raadzaal",
+      "long_description":"<p>Hierbij wordt u uitgenodigd voor de openbare vergadering van de Gemeenteraad<\/p>",
+      "short_description":"RAAD",
+      "commissie":991,
+      "link":"\/vergadering\/301272\/Gemeenteraad 05-07-2016",
+      "documents":[
+        {
+          "title":" (collectie)",
+          "url":"https:\/\/leiden.notubiz.nl\/document\/3658563\/6\/vergaderset-RAAD-20160705",
+          "confidential":0,
+          "file_type":"pdf"
+        },
+        {
+          "title":"Verslag Gemeenteraad 5-7 juli 2016 (wordt niet vastgesteld)",
+          "url":"https:\/\/leiden.notubiz.nl\/document\/4083741\/1\/Verslag_Gemeenteraad_5-7_juli_2016_%28wordt_niet_vastgesteld%29",
+          "confidential":0,
+          "file_type":"pdf"
+        },
+        [
+          {
+            "title":"A.160064.1 ingetrokken CU Budgetoverheveling JGT",
+            "file_type":"pdf",
+            "document_type":"Amendement",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814756\/2\/A_160064_1_ingetrokken_CU_Budgetoverheveling_JGT",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"A.160064.1 ingetrokken CU Budgetoverheveling JGT",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147703",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160064.1 aanvaard GL Ontdek de Leidse (beeldend) kunstenaar!",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814757\/2\/M_160064_1_aanvaard_GL_Ontdek_de_Leidse__beeldend__kunstenaar_",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160064.1 aanvaard GL Ontdek de Leidse (beeldend) kunstenaar!",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147704",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160064.2 aanvaard GL Bep mag het weten",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814758\/2\/M_160064_2_aanvaard_GL_Bep_mag_het_weten",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160064.2 aanvaard GL Bep mag het weten",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147705",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160064.3 verworpen CDA Tijdig betalen facturen",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814759\/2\/M_160064_3_verworpen_CDA_Tijdig_betalen_facturen",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160064.3 verworpen CDA Tijdig betalen facturen",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147706",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160064.4 aanvaard VVD Leidse proef met regelluwe zones",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814760\/2\/M_160064_4_aanvaard_VVD_Leidse_proef_met_regelluwe_zones",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160064.4 aanvaard VVD Leidse proef met regelluwe zones",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147707",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160064.5 aanvaard VVD Vinger aan de pols bij Europese aanbestedingen",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814761\/2\/M_160064_5_aanvaard_VVD_Vinger_aan_de_pols_bij_Europese_aanbestedingen",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160064.5 aanvaard VVD Vinger aan de pols bij Europese aanbestedingen",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147708",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160064.6 aanvaard VVD Voorkomen fraudegevoeligheid bij declaratieregeling",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814762\/2\/M_160064_6_aanvaard_VVD_Voorkomen_fraudegevoeligheid_bij_declaratieregeling",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160064.6 aanvaard VVD Voorkomen fraudegevoeligheid bij declaratieregeling",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147709",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160064.7 aanvaard CU JGT",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814763\/2\/M_160064_7_aanvaard_CU_JGT",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160064.7 aanvaard CU JGT",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147710",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"A.160065.1 verworpen GL Tegemoetkoming chronisch zieken en gehandicapten",
+            "file_type":"pdf",
+            "document_type":"Amendement",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814764\/2\/A_160065_1_verworpen_GL_Tegemoetkoming_chronisch_zieken_en_gehandicapten",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"A.160065.1 verworpen GL Tegemoetkoming chronisch zieken en gehandicapten",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147711",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"A.160066.1 verworpen PvdD Leiden Regenerative Medicine Platform",
+            "file_type":"pdf",
+            "document_type":"Amendement",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814765\/2\/A_160066_1_verworpen_PvdD_Leiden_Regenerative_Medicine_Platform",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"A.160066.1 verworpen PvdD Leiden Regenerative Medicine Platform",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147712",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160066.1 aanvaard GL Stop de lobby tegen de Wet Open Overheid",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814766\/2\/M_160066_1_aanvaard_GL_Stop_de_lobby_tegen_de_Wet_Open_Overheid",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160066.1 aanvaard GL Stop de lobby tegen de Wet Open Overheid",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147713",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160066.2 verworpen CDA  Wachtlijst Veilig Thuis",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814767\/2\/M_160066_2_verworpen_CDA__Wachtlijst_Veilig_Thuis",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160066.2 verworpen CDA  Wachtlijst Veilig Thuis",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147714",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160066.3 aanvaard CU Aanpak schooluitval MBO",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814768\/2\/M_160066_3_aanvaard_CU_Aanpak_schooluitval_MBO",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160066.3 aanvaard CU Aanpak schooluitval MBO",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147715",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.160074.1 aanvaard SP Uitbreiden evaluatie cameratoezicht",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814769\/2\/M_160074_1_aanvaard_SP_Uitbreiden_evaluatie_cameratoezicht",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.160074.1 aanvaard SP Uitbreiden evaluatie cameratoezicht",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147716",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.1 aanvaard GL Jongerenparticipatie 2.0",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814770\/2\/M_KB_1_aanvaard_GL_Jongerenparticipatie_2_0",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.1 aanvaard GL Jongerenparticipatie 2.0",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147717",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.2 aanvaard GL Snelle oplossingen problematiek EED",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814771\/2\/M_KB_2_aanvaard_GL_Snelle_oplossingen_problematiek_EED",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.2 aanvaard GL Snelle oplossingen problematiek EED",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147718",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.3 ingetrokken GL Zwemmen betaalbaar",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814772\/2\/M_KB_3_ingetrokken_GL_Zwemmen_betaalbaar",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.3 ingetrokken GL Zwemmen betaalbaar",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147719",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.4 verworpen CDA  Viering 450 jaar Leidens Ontzet",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814773\/2\/M_KB_4_verworpen_CDA__Viering_450_jaar_Leidens_Ontzet",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.4 verworpen CDA  Viering 450 jaar Leidens Ontzet",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147720",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.5 verworpen CDA Behoud bibliotheek Merenwijk",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814774\/2\/M_KB_5_verworpen_CDA_Behoud_bibliotheek_Merenwijk",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.5 verworpen CDA Behoud bibliotheek Merenwijk",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147721",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.6 ingetrokken CDA Flaneren langs de Korte Vliet 2",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814775\/2\/M_KB_6_ingetrokken_CDA_Flaneren_langs_de_Korte_Vliet_2",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.6 ingetrokken CDA Flaneren langs de Korte Vliet 2",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147722",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.7 ingetrokken CDA  Subsidie Pieterskerk",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814776\/2\/M_KB_7_ingetrokken_CDA__Subsidie_Pieterskerk",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.7 ingetrokken CDA  Subsidie Pieterskerk",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147723",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.8 aanvaard CDA Maandelijkse vuilophaaldag",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814777\/2\/M_KB_8_aanvaard_CDA_Maandelijkse_vuilophaaldag",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.8 aanvaard CDA Maandelijkse vuilophaaldag",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147724",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.9 ingetrokken CDA Sociale effecten woningbouwopgave gemeente Leiden",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814778\/2\/M_KB_9_ingetrokken_CDA_Sociale_effecten_woningbouwopgave_gemeente_Leiden",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.9 ingetrokken CDA Sociale effecten woningbouwopgave gemeente Leiden",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147725",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.10 ingetrokken VVD Geen AirBnB in sociale huurwoningen",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814779\/2\/M_KB_10_ingetrokken_VVD_Geen_AirBnB_in_sociale_huurwoningen",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.10 ingetrokken VVD Geen AirBnB in sociale huurwoningen",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147726",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.11 aanvaard VVD Parkeercampagne Lammermarktgarage 'Vul de put!'",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814780\/2\/M_KB_11_aanvaard_VVD_Parkeercampagne_Lammermarktgarage__Vul_de_put__",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.11 aanvaard VVD Parkeercampagne Lammermarktgarage 'Vul de put!'",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147727",
+            "date":"08-11-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.12 aanvaard PvdD Parken en onverharde gebieden vuurwerkvrij",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814781\/2\/M_KB_12_aanvaard_PvdD_Parken_en_onverharde_gebieden_vuurwerkvrij",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.12 aanvaard PvdD Parken en onverharde gebieden vuurwerkvrij",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147728",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.13 aanvaard CU Tegengaan eenzaamheid",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814782\/2\/M_KB_13_aanvaard_CU_Tegengaan_eenzaamheid",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.13 aanvaard CU Tegengaan eenzaamheid",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147729",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.14 verworpen CU Stimuleren zwemsport",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814783\/2\/M_KB_14_verworpen_CU_Stimuleren_zwemsport",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.14 verworpen CU Stimuleren zwemsport",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147730",
+            "date":"31-10-2016"
+          }
+        ],
+        [
+          {
+            "title":"M.KB.15 verworpen CU Lakenhal binnen financiele kaders",
+            "file_type":"pdf",
+            "document_type":"Motie",
+            "document_url":"https:\/\/leiden.notubiz.nl\/document\/3814784\/2\/M_KB_15_verworpen_CU_Lakenhal_binnen_financiele_kaders",
+            "module_name":"Moties en Amendementen",
+            "module_item_name":"M.KB.15 verworpen CU Lakenhal binnen financiele kaders",
+            "module_item_url":"\/modules\/6\/moties_en_amendementen\/147731",
+            "date":"31-10-2016"
+          }
+        ]
+      ],
+      "date":"05-07-2016",
+      "time":"20:00"
+    },
+    {
+      "id":273854,
+      "canceled":false,
+      "description":"AB Holland Rijnland",
+      "confidential":0,
+      "location":"",
+      "long_description":"",
+      "short_description":null,
+      "commissie":0,
+      "link":"",
+      "documents":[
+
+      ],
+      "date":"06-07-2016",
+      "time":"20:00"
+    },
+    {
+      "id":307538,
+      "canceled":false,
+      "description":"Gemeenteraad",
+      "confidential":0,
+      "location":"Raadzaal",
+      "long_description":"<p>Hierbij wordt u uitgenodigd voor de openbare vergadering van de Gemeenteraad<\/p>",
+      "short_description":"RAAD",
+      "commissie":991,
+      "link":"\/vergadering\/307538\/Gemeenteraad 07-07-2016",
+      "documents":[
+        {
+          "title":" (collectie)",
+          "url":"https:\/\/leiden.notubiz.nl\/document\/3720425\/1\/vergaderset-RAAD-20160705",
+          "confidential":0,
+          "file_type":"pdf"
+        }
+      ],
+      "date":"07-07-2016",
+      "time":"16:00"
+    },
+    {
+      "id":247976,
+      "canceled":false,
+      "description":"Start zomerreces",
+      "confidential":0,
+      "location":"",
+      "long_description":"",
+      "short_description":null,
+      "commissie":0,
+      "link":"",
+      "documents":[
+
+      ],
+      "date":"09-07-2016",
+      "time":"00:00"
+    }
+  ],
+  "categories":[
+    {
+      "id":6049,
+      "short":"Overig",
+      "long":"Overige evenementen"
+    },
+    {
+      "id":991,
+      "short":"RAAD",
+      "long":"Gemeenteraad"
+    }
+  ]
+}

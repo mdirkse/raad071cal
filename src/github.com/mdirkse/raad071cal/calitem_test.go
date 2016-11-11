@@ -15,7 +15,7 @@ package main
 
 import (
 	"bytes"
-	"reflect"
+	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
 	"time"
@@ -38,10 +38,8 @@ func TestItemsShouldBeEnrichedCorrectly(t *testing.T) {
 
 	for _, i := range testSet {
 		result, _ := EnrichItem(i.input, GetTestTime())
-
-		if !reflect.DeepEqual(i.expected, result) {
-			t.Errorf("Test item incorrectly parsed! \n Expected [%+v] \n but got  [%+v]!", i.expected, result)
-		}
+		result.Documents = nil // reset to nil so we don't have to fake this in the expected struct as well
+		assert.Equal(t, i.expected, result, "Test item incorrectly parsed!")
 	}
 }
 
@@ -50,10 +48,7 @@ func TestParseItemWithInvalidDateShouldYieldAnError(t *testing.T) {
 	tstInput.Date = "bladibla"
 
 	_, err := EnrichItem(tstInput, GetTestTime())
-
-	if err == nil {
-		t.Fatal("Faulty test item parsed when it shouldn't have been!")
-	}
+	assert.NotNil(t, err, "Faulty test item parsed when it shouldn't have been!")
 }
 
 func TestVariousSpecialCasesForMeetingDuration(t *testing.T) {
@@ -92,13 +87,8 @@ func TestRenderItemShouldYieldCorrectICalEvent(t *testing.T) {
 		var result bytes.Buffer
 		err := i.input.RenderItem(&result)
 
-		if err != nil {
-			t.Errorf("Unable to render test item! Error: [%+v]", err)
-		}
-
-		if i.expected != result.String() {
-			t.Errorf("Test item incorrectly rendered! Expected \n[%s] \nbut got\n[%s]!", i.expected, result.String())
-		}
+		assert.Nil(t, err, "Unable to render test item!")
+		assert.Equal(t, i.expected, result.String(), "Test item incorrectly rendered!")
 	}
 }
 
@@ -116,6 +106,16 @@ func deEnrich(i CalItem) CalItem {
 	d[0] = unicode.ToLower(d[0])
 	i.Description = string(d)
 
+	var docs []interface{}
+	for _, d := range i.ExtractedDocuments {
+		m := make(map[string]interface{}, 2)
+		m["title"] = d.Title
+		m["url"] = d.URL
+		docs = append(docs, m)
+	}
+	i.Documents = docs
+	i.ExtractedDocuments = []document{}
+
 	return i
 }
 
@@ -123,17 +123,17 @@ func GetTestItem1() CalItem {
 	iTime := GetTestTime().Add(-14 * time.Hour)
 
 	return CalItem{
-		UID:             "e058fd25aa867090dd7e25c9455d7156",
-		AllDay:          true,
-		Documents:       []document{},
-		Link:            "",
-		Location:        "",
-		Description:     "Einde zomerreces",
-		Date:            iTime.Format(testDateFormat),
-		Time:            "00:00",
-		CreatedDateTime: GetTestTime().In(time.UTC),
-		StartDateTime:   iTime.In(time.UTC), // Correct to 0 hours for allDay
-		EndDateTime:     iTime.In(time.UTC), // Correct to 0 hours for allDay
+		UID:                "e058fd25aa867090dd7e25c9455d7156",
+		AllDay:             true,
+		ExtractedDocuments: []document{},
+		Link:               "",
+		Location:           "",
+		Description:        "Einde zomerreces",
+		Date:               iTime.Format(testDateFormat),
+		Time:               "00:00",
+		CreatedDateTime:    GetTestTime().In(time.UTC),
+		StartDateTime:      iTime.In(time.UTC), // Correct to 0 hours for allDay
+		EndDateTime:        iTime.In(time.UTC), // Correct to 0 hours for allDay
 	}
 }
 
@@ -156,7 +156,7 @@ func GetTestItem2() CalItem {
 		Link:        agendaURLPrefix + "/raad071cal.html",
 		Location:    "Raadzaal, Stadhuis, Leiden",
 		Description: "Instructiebijeenkomst Raad071Cal",
-		Documents: []document{
+		ExtractedDocuments: []document{
 			{
 				Title: "iCal spec",
 				URL:   "https://www.ietf.org/rfc/rfc2445.txt",
@@ -188,17 +188,17 @@ END:VEVENT`
 
 func GetTestItem3() CalItem {
 	return CalItem{
-		UID:             "7599ab178274a0adcbee1b7e80f72bed",
-		AllDay:          false,
-		Documents:       []document{},
-		Link:            agendaURLPrefix + "/vergadering/247980/raadscommissie%20Stedelijke%20Ontwikkeling%2001-09-2016",
-		Location:        "Commissiekamer, Stadhuis, Leiden",
-		Description:     "Raadscommissie Stedelijke Ontwikkeling",
-		Date:            GetTestTime().Add(4 * time.Hour).Format(testDateFormat),
-		Time:            "20:00",
-		CreatedDateTime: GetTestTime().In(time.UTC),
-		StartDateTime:   GetTestTime().In(time.UTC).Add(4 * time.Hour),
-		EndDateTime:     GetTestTime().In(time.UTC).Add(7 * time.Hour),
+		UID:                "7599ab178274a0adcbee1b7e80f72bed",
+		AllDay:             false,
+		ExtractedDocuments: []document{},
+		Link:               agendaURLPrefix + "/vergadering/247980/raadscommissie%20Stedelijke%20Ontwikkeling%2001-09-2016",
+		Location:           "Commissiekamer, Stadhuis, Leiden",
+		Description:        "Raadscommissie Stedelijke Ontwikkeling",
+		Date:               GetTestTime().Add(4 * time.Hour).Format(testDateFormat),
+		Time:               "20:00",
+		CreatedDateTime:    GetTestTime().In(time.UTC),
+		StartDateTime:      GetTestTime().In(time.UTC).Add(4 * time.Hour),
+		EndDateTime:        GetTestTime().In(time.UTC).Add(7 * time.Hour),
 	}
 }
 

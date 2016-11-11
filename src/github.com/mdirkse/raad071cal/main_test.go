@@ -15,6 +15,7 @@ package main
 
 import (
 	"bytes"
+	"github.com/stretchr/testify/assert"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -26,44 +27,6 @@ func TestMain(m *testing.M) {
 	code := m.Run()
 	os.Exit(code)
 }
-
-//func TestParseCalendarShouldYieldItems(t *testing.T) {
-//	var files = []struct {
-//		location   string
-//		totalItems int
-//	}{
-//		{"../../../../testfiles/errorparse.html", 4},
-//		{"../../../../testfiles/normalparse.html", 5},
-//		{"../../../../testfiles/outdatedparse.html", 3},
-//	}
-//
-//	for _, pt := range files {
-//		b, _ := ioutil.ReadFile(pt.location)
-//		items, _ := parseCalendar(&b)
-//
-//		if len(items) != pt.totalItems {
-//			t.Errorf("Amount returned items does not match! Expected %d but got %d.", pt.totalItems, len(items))
-//		}
-//
-//	}
-//}
-//
-//func TestParseCalenderWithWrongInputShouldYieldError(t *testing.T) {
-//	nonsenseCalSource := []byte("the regex will not trigger on this string")
-//	_, err := parseCalendar(&nonsenseCalSource)
-//
-//	if err == nil {
-//		t.Fatal("Nonsense calendar string should have produced an error!")
-//	}
-//}
-//
-//func TestFetchCalenderPageWithBrokenUrlShouldYieldError(t *testing.T) {
-//	_, err := fetchCalenderPage("http://localhost:60606")
-//
-//	if err == nil {
-//		t.Fatal("Fetching a broken URL should have produced an error!")
-//	}
-//}
 
 func TestRenderCalendarShouldYieldCorrectOutput(t *testing.T) {
 	testCals := []CalItem{GetTestItem1(), GetTestItem2(), GetTestItem3()}
@@ -90,9 +53,7 @@ func TestRenderCalendarShouldYieldCorrectOutput(t *testing.T) {
 		var result bytes.Buffer
 		renderCalendar(ct.items, &result)
 
-		if ct.expected != result.String() {
-			t.Errorf("Render went awry! Expected:\n%s \n\nbut got:\n%s", ct.expected, result.String())
-		}
+		assert.Equal(t, ct.expected, result.String(), "Render went awry!")
 	}
 }
 
@@ -102,13 +63,6 @@ func TestHttpEndpointRequestShouldYieldCorrectOutput(t *testing.T) {
 	w := httptest.NewRecorder()
 	calHandler().ServeHTTP(w, req)
 
-	if w.Code != 200 {
-		t.Errorf("Request should return status 200 but was %d!", w.Code)
-	}
-
-	expected := calendarHeader + calendarFooter
-
-	if expected != w.Body.String() {
-		t.Errorf("Request went awry! Expected:\n%s \n\nbut got:\n%s", expected, w.Body.String())
-	}
+	assert.Equal(t, 200, w.Code, "Request returned incorrect status!")
+	assert.Equal(t, calendarHeader+calendarFooter, w.Body.String(), "Request went awry!")
 }

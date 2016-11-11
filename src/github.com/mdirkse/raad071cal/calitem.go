@@ -38,7 +38,7 @@ DTSTART:{{.StartDateTime.Format "20060102T150405"}}Z
 DTEND:{{.EndDateTime.Format "20060102T150405"}}Z
 {{- end}}
 SUMMARY:{{.Description}}
-DESCRIPTION:{{- if .Link}}Notubiz link: {{.Link}}\n{{- end}}{{- if .Documents}}Documents:\n{{range .Documents}}- {{.Title}} {{.URL}}\n{{end}}{{- end}}
+DESCRIPTION:{{- if .Link}}Notubiz link: {{.Link}}\n{{- end}}{{- if .ExtractedDocuments}}Documents:\n{{range .ExtractedDocuments}}- {{.Title}} {{.URL}}\n{{end}}{{- end}}
 LOCATION:{{.Location}}
 END:VEVENT`
 )
@@ -49,18 +49,19 @@ var (
 
 // CalItem represents a calendar item that can be rendered to iCal.
 type CalItem struct {
-	UID             string
-	AllDay          bool
-	Canceled        bool       `json:"canceled"`
-	Description     string     `json:"description"`
-	Location        string     `json:"location"`
-	Link            string     `json:"link"`
-	Documents       []document `json:"documents"`
-	Date            string     `json:"date"`
-	CreatedDateTime time.Time
-	Time            string `json:"time"`
-	StartDateTime   time.Time
-	EndDateTime     time.Time
+	UID                string
+	AllDay             bool
+	Canceled           bool          `json:"canceled"`
+	Description        string        `json:"description"`
+	Location           string        `json:"location"`
+	Link               string        `json:"link"`
+	Documents          []interface{} `json:"documents"`
+	ExtractedDocuments []document
+	Date               string `json:"date"`
+	CreatedDateTime    time.Time
+	Time               string `json:"time"`
+	StartDateTime      time.Time
+	EndDateTime        time.Time
 }
 
 type document struct {
@@ -107,6 +108,8 @@ func EnrichItem(i CalItem, runStart time.Time) (CalItem, error) {
 	i.UID = generateID(i)
 	i.Link = renderLink(i)
 	i.Location = renderLocation(i.Location)
+
+	i.ExtractedDocuments = extractDocumentSet(i.Documents)
 
 	return i, nil
 }
@@ -172,4 +175,33 @@ func renderLocation(o string) string {
 	}
 
 	return o
+}
+
+func extractDocumentSet(sets []interface{}) []document {
+	docs := []document{}
+
+	for _, ds := range sets {
+		switch d := ds.(type) {
+		case []interface{}:
+			docs = append(docs, extractDocumentSet(d)...)
+		case map[string]interface{}:
+			docs = append(docs, extractDocument(d))
+		}
+	}
+	return docs
+}
+
+func extractDocument(d map[string]interface{}) document {
+	var url string
+
+	if u, ok := d["url"]; ok {
+		url = u.(string)
+	} else {
+		url = d["document_url"].(string)
+	}
+
+	return document{
+		Title: d["title"].(string),
+		URL:   url,
+	}
 }

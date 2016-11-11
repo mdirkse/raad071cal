@@ -16,10 +16,9 @@ package main
 import (
 	"bytes"
 	"errors"
+	"github.com/stretchr/testify/assert"
 	"io/ioutil"
 	"net/http"
-	"reflect"
-	"strings"
 	"testing"
 )
 
@@ -32,31 +31,28 @@ func TestSuccessfulFetch(t *testing.T) {
 			Body: ioutil.NopCloser(bytes.NewBufferString("callback_function({})")),
 		}, nil
 	}
-	defer func() { httpGet = http.Get }()
+	defer func() {
+		httpGet = http.Get
+	}()
 
 	expected := "{}"
 	result, _ := fetchCalendarMonthJSON(yearMonth{2016, 8})
 
-	if !strings.Contains(reqURL, "year=2016&month=8") {
-		t.Errorf("Incorrect request URL! Was\n[%s]", reqURL)
-	}
-
-	if expected != result {
-		t.Errorf("Calendar month incorrectly fetched! Expected \n[%s] \nbut got\n[%s]!", expected, result)
-	}
+	assert.Contains(t, reqURL, "year=2016&month=8", "Incorrect request URL!")
+	assert.Equal(t, expected, result, "Calendar month incorrectly fetched!")
 }
 
 func TestFailureFetch(t *testing.T) {
 	httpGet = func(string) (*http.Response, error) {
 		return nil, errors.New("Eep!")
 	}
-	defer func() { httpGet = http.Get }()
+	defer func() {
+		httpGet = http.Get
+	}()
 
 	_, err := fetchCalendarMonthJSON(yearMonth{2016, 8})
 
-	if err == nil {
-		t.Fatal("Incorrect calendar month fetch did not result in an error!")
-	}
+	assert.NotNil(t, err, "Incorrect calendar month fetch did not result in an error!")
 }
 
 func TestGetCalendarItemsFromJSON(t *testing.T) {
@@ -64,13 +60,14 @@ func TestGetCalendarItemsFromJSON(t *testing.T) {
 	result, err := getCalendarItemsFromJSON(string(tstJSON), GetTestTime())
 	expected := []CalItem{GetTestItem1(), GetTestItem2(), GetTestItem3()}
 
-	if err != nil {
-		t.Errorf("Unable to get calendar items! Error: [%+v]", err)
+	assert.Nil(t, err, "Unable to get calendar items!")
+
+	// reset docs to nil so we don't have to fake this in the expected struct as well
+	for i := 0; i < len(result); i++ {
+		result[i].Documents = nil
 	}
 
-	if !reflect.DeepEqual(expected, result) {
-		t.Errorf("Test JSON rendered incorrect items! Expected \n%v \nbut got\n%v!", expected, result)
-	}
+	assert.Equal(t, expected, result, "Test JSON rendered incorrect items!")
 }
 
 func TestGenerateMonthYearRange(t *testing.T) {
@@ -97,29 +94,42 @@ func TestGenerateMonthYearRange(t *testing.T) {
 
 	result := generateMonthYearRange(GetTestTime())
 
-	if !reflect.DeepEqual(expected, result) {
-		t.Errorf("Test item incorrectly rendered! Expected \n%v \nbut got\n%v!", expected, result)
-	}
+	assert.Equal(t, expected, result, "Test item incorrectly rendered!")
 }
 
 func TestFetchCalendarItemsSuccess(t *testing.T) {
-	tstJSON, _ := ioutil.ReadFile("../../../../testfiles/tst.json")
-	httpGet = func(url string) (*http.Response, error) {
-		return &http.Response{
-			Body: ioutil.NopCloser(bytes.NewBufferString("callback_function(" + string(tstJSON) + ")")),
-		}, nil
-	}
-	defer func() { httpGet = http.Get }()
-
-	items, err := fetchCalendarItems(GetTestTime())
-	if err != nil {
-		t.Errorf("Errors were returned. Something went wrong: [%+v]", err)
+	testSet := []struct {
+		srcFile     string
+		eventsTotal int
+	}{
+		// We should have 18 (generated months) * 3 (test items) = 54 items
+		// {"../../../../testfiles/tst.json", 54},
+		// We should have 18 (generated months) * 5 (test items) = 90 items
+		{"../../../../testfiles/ghi-1.json", 90},
 	}
 
-	// We should have 18 (generated months) * 3 (test items) = 54 items
-	expected := 54
-	if len(items) != expected {
-		t.Errorf("Wrong amount of items returned! Expected %d but got %d!", expected, len(items))
+	// Make sure we reset the httpGet
+	defer func() {
+		httpGet = http.Get
+	}()
+
+	for _, i := range testSet {
+		tstJSON, _ := ioutil.ReadFile(i.srcFile)
+		httpGet = func(url string) (*http.Response, error) {
+			return &http.Response{
+				Body: ioutil.NopCloser(bytes.NewBufferString("callback_function(" + string(tstJSON) + ")")),
+			}, nil
+		}
+
+		items, err := fetchCalendarItems(GetTestTime())
+		if err != nil {
+			t.Errorf("Errors were returned. Something went wrong: [%+v]", err)
+		}
+
+		expected := i.eventsTotal
+		if len(items) != expected {
+			t.Errorf("Wrong amount of items returned! Expected %d but got %d!", expected, len(items))
+		}
 	}
 }
 
@@ -129,7 +139,9 @@ func TestFetchCalendarItemsFailureInvalidJson(t *testing.T) {
 			Body: ioutil.NopCloser(bytes.NewBufferString("callback_function({\"bla\": asfasdfasdf})")),
 		}, nil
 	}
-	defer func() { httpGet = http.Get }()
+	defer func() {
+		httpGet = http.Get
+	}()
 
 	_, err := fetchCalendarItems(GetTestTime())
 	if err == nil {

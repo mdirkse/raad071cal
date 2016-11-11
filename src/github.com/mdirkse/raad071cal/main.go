@@ -76,7 +76,7 @@ func initCalFetcherVars() {
 func loadCalendarItems() {
 	newCalItems, err := fetchCalendarItems(time.Now())
 	if err != nil {
-		log.Printf("ERROR - Unable to fetch all calendar items! Error: [%+v]", err)
+		log.Printf("ERROR - Unable to fetch all calendar items! Not updating iCal. Error: [%+v]", err)
 		return
 	}
 

@@ -14,5 +14,5 @@ docker run --rm \
            -w "${projectnamedir}" \
            --net=none \
            --log-driver=none \
-           golang:1.6.0-alpine \
+           golang:1.13.6-alpine3.11 \
            go "$@"
